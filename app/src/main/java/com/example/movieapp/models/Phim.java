@@ -9,6 +9,19 @@ public class Phim {
     public String title;
     public String url;
 
+    public Phim(String imageUrl, String title) {
+        this.imageUrl = imageUrl;
+        this.title = title;
+    }
+
+    public Phim(String category, List<Episode> episode, String imageUrl, String title, String url) {
+        this.category = category;
+        this.episode = episode;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.url = url;
+    }
+
     public String getCategory() {
         return category;
     }

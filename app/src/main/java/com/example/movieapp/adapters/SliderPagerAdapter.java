@@ -11,15 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.movieapp.R;
-import com.example.movieapp.models.Slide;
+import com.example.movieapp.models.Phim;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
     private Context mContext;
-    private List<Slide> mList;
+    private List<Phim> mList;
 
-    public SliderPagerAdapter(Context mContext, List<Slide> mList) {
+    public SliderPagerAdapter(Context mContext, List<Phim> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -33,7 +35,7 @@ public class SliderPagerAdapter extends PagerAdapter {
         ImageView slideImg = slideLayout.findViewById(R.id.slide_img);
         TextView slideText = slideLayout.findViewById(R.id.slide_title);
 
-        slideImg.setImageResource(mList.get(position).getImage());
+        Picasso.with(mContext).load(mList.get(position).getImageUrl()).into(slideImg);
         slideText.setText(mList.get(position).getTitle());
 
         container.addView(slideLayout);
