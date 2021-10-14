@@ -3,22 +3,49 @@ package com.example.movieapp.models;
 import java.util.List;
 
 public class Phim {
-    public List<Phimbo> phimbo;
-    public List<Phimbo> phimle;
+    public String category;
+    public List<Episode> episode;
+    public String imageUrl;
+    public String title;
+    public String url;
 
-    public List<Phimbo> getPhimbo() {
-        return phimbo;
+    public String getCategory() {
+        return category;
     }
 
-    public void setPhimbo(List<Phimbo> phimbo) {
-        this.phimbo = phimbo;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public List<Phimbo> getPhimle() {
-        return phimle;
+    public List<Episode> getEpisode() {
+        return episode;
     }
 
-    public void setPhimle(List<Phimbo> phimle) {
-        this.phimle = phimle;
+    public void setEpisode(List<Episode> episode) {
+        this.episode = episode;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

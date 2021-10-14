@@ -1,6 +1,7 @@
 package com.example.movieapp.models;
 
 import java.util.Date;
+import java.util.Map;
 
 public class ResponseParser {
     private String sourceUrl;
@@ -8,7 +9,7 @@ public class ResponseParser {
     private String author;
     private Buymecoffee buymecoffee;
     private Date lastUpdatedAtSource;
-    private Phim phim;
+    private Map<String, Phim> phim;
 
     public String getSourceUrl() {
         return sourceUrl;
@@ -50,11 +51,11 @@ public class ResponseParser {
         this.lastUpdatedAtSource = lastUpdatedAtSource;
     }
 
-    public Phim getPhim() {
+    public Map<String, Phim> getPhim() {
         return phim;
     }
 
-    public void setPhim(Phim phim) {
+    public void setPhim(Map<String, Phim> phim) {
         this.phim = phim;
     }
 }

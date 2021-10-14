@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 
 import com.example.movieapp.adapters.SliderPagerAdapter;
+import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.Slide;
 import com.google.android.material.tabs.TabLayout;
 
@@ -28,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
         indicator = findViewById(R.id.indicator);
 
         listSlides = new ArrayList<>();
-        listSlides.add(new Slide(R.drawable.slide1, "Title /nmore text here"));
-        listSlides.add(new Slide(R.drawable.slide2, "Title /nmore text here"));
-        listSlides.add(new Slide(R.drawable.slide1, "Title /nmore text here"));
-        listSlides.add(new Slide(R.drawable.slide2, "Title /nmore text here"));
+        listSlides.add(new Slide(R.drawable.slide1, "Title \nmore text here"));
+        listSlides.add(new Slide(R.drawable.slide2, "Title \nmore text here"));
+        listSlides.add(new Slide(R.drawable.slide1, "Title \nmore text here"));
+        listSlides.add(new Slide(R.drawable.slide2, "Title \nmore text here"));
 
         SliderPagerAdapter adapter = new SliderPagerAdapter(this, listSlides);
         sliderPager.setAdapter(adapter);
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new MainActivity.SliderTimer(), 4000, 6000);
 
         indicator.setupWithViewPager(sliderPager, true);
+
+        // Recyclerview Setup
+        List<Phim> listMovies = new ArrayList<>();
+        listMovies.add(new Phim());
     }
 
     class SliderTimer extends TimerTask {
