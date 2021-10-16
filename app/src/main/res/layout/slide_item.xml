@@ -39,6 +39,7 @@
         app:srcCompat="@drawable/gradient_bg" />
 
     <TextView
+        android:maxLines="2"
         android:textSize="24sp"
         android:textColor="#ffffff"
         android:id="@+id/slide_title"

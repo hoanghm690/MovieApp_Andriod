@@ -9,6 +9,9 @@ public class Phim {
     public String title;
     public String url;
 
+    public Phim() {
+    }
+
     public Phim(String imageUrl, String title) {
         this.imageUrl = imageUrl;
         this.title = title;

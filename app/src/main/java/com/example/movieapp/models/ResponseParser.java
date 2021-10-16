@@ -1,5 +1,6 @@
 package com.example.movieapp.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -9,7 +10,19 @@ public class ResponseParser {
     private String author;
     private Buymecoffee buymecoffee;
     private Date lastUpdatedAtSource;
-    private Map<String, Phim> phim;
+    private Map<String, ArrayList<Phim>> phim;
+
+    public ResponseParser() {
+    }
+
+    public ResponseParser(String sourceUrl, Date lastUpdatedAtApify, String author, Buymecoffee buymecoffee, Date lastUpdatedAtSource, Map<String, ArrayList<Phim>> phim) {
+        this.sourceUrl = sourceUrl;
+        this.lastUpdatedAtApify = lastUpdatedAtApify;
+        this.author = author;
+        this.buymecoffee = buymecoffee;
+        this.lastUpdatedAtSource = lastUpdatedAtSource;
+        this.phim = phim;
+    }
 
     public String getSourceUrl() {
         return sourceUrl;
@@ -51,11 +64,11 @@ public class ResponseParser {
         this.lastUpdatedAtSource = lastUpdatedAtSource;
     }
 
-    public Map<String, Phim> getPhim() {
+    public Map<String, ArrayList<Phim>> getPhim() {
         return phim;
     }
 
-    public void setPhim(Map<String, Phim> phim) {
+    public void setPhim(Map<String, ArrayList<Phim>> phim) {
         this.phim = phim;
     }
 }
