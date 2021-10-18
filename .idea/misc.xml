@@ -6,11 +6,16 @@
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/default_indicator.xml" value="0.11979166666666667" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/gradient_bg.xml" value="0.2552083333333333" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.18020833333333333" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.11388888888888889" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/indicator_selector.xml" value="0.11979166666666667" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/selected_indicator.xml" value="0.11979166666666667" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_movie_detail.xml" value="0.103125" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_my_list.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_main.xml" value="0.10902777777777778" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/item_movie.xml" value="0.264" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/my_list_item.xml" value="0.1" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/related_item.xml" value="0.1" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/slide_item.xml" value="0.24444444444444444" />
       </map>
     </option>

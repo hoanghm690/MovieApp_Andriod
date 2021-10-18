@@ -1,6 +1,8 @@
 package com.example.movieapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.movieapp.R;
 import com.example.movieapp.adapters.MovieAdapter;
+import com.example.movieapp.adapters.MovieItemClickListener;
 import com.example.movieapp.adapters.SliderPagerAdapter;
 import com.example.movieapp.api.ApiUtils;
 import com.example.movieapp.api.MovieService;
@@ -26,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
     List<Phim> listSlides;
     ViewPager sliderPager;
     TabLayout indicator;
@@ -38,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Ứng dụng xem phim");
+        setTitle("TH Play");
+        movieService = ApiUtils.getMoiveService();
 
         iniViews();
         iniSlider();
@@ -59,15 +63,13 @@ public class MainActivity extends AppCompatActivity {
         listMovies.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d96d5835f810953887a808_poster-meo-hay-cau-nguyen.jpg", "Meo, Hãy Cầu Nguyện"));
         listMovies.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d6f009b1a6a7b00d2ceaf4_poster-tham-phan-ac-ma.jpg", "Thẩm Phán Ác Ma"));
 
-        MovieAdapter movieAdapter = new MovieAdapter(this, listMovies);
+        MovieAdapter movieAdapter = new MovieAdapter(this, listMovies, this);
         moviesRV.setAdapter(movieAdapter);
         moviesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 //      moviesRV.setLayoutManager(new GridLayoutManager(this, 3 ));
     }
 
     private void iniSlider() {
-        movieService = ApiUtils.getMoiveService();
-
         Call<ResponseParser> call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
         call.enqueue(new Callback<ResponseParser>() {
             @Override
@@ -96,22 +98,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
             }
         });
-
-//        listSlides = new ArrayList<>();
-//        listSlides.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60de6d7faa1bb691e514b6d4_poster-anh-la-mua-xuan-cua-em.jpg", "Anh Là Mùa Xuân Của Em"));
-//        listSlides.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60ddc1a2085d2983a0be88fa_poster-toi-da-lo-yeu-muc-tieu-truy-sat-cua-minh.jpg", "Tôi Đã Lỡ Yêu Mục Tiêu Truy Sát Của Mình"));
-//        listSlides.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d96d5835f810953887a808_poster-meo-hay-cau-nguyen.jpg", "Meo, Hãy Cầu Nguyện"));
-//        listSlides.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d6f009b1a6a7b00d2ceaf4_poster-tham-phan-ac-ma.jpg", "Thẩm Phán Ác Ma"));
-//        SliderPagerAdapter adapter = new SliderPagerAdapter(this, listSlides);
-//        sliderPager.setAdapter(adapter);
-//
-//        // setup timer
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
-//        indicator.setupWithViewPager(sliderPager, true);
     }
 
+    @Override
+    public void onMovieClick(Phim movie, ImageView movieImageView) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("title", movie.getTitle());
+        intent.putExtra("imgURl", movie.getImageUrl());
+        intent.putExtra("category", movie.getCategory());
+        startActivity(intent);
 
+        Toast.makeText(this, "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
+    }
 
     class SliderTimer extends TimerTask {
         @Override
