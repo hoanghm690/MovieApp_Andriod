@@ -9,9 +9,12 @@
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.11388888888888889" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/indicator_selector.xml" value="0.11979166666666667" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/selected_indicator.xml" value="0.11979166666666667" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_login.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_movie_detail.xml" value="0.103125" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_my_list.xml" value="0.16944444444444445" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_profile.xml" value="0.16944444444444445" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/change_password.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_action.xml" value="0.115625" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_comedy.xml" value="0.115625" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_drama.xml" value="0.115625" />
@@ -20,6 +23,7 @@
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_war.xml" value="0.115625" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/item_movie.xml" value="0.264" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/my_list_item.xml" value="0.1" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/register_layout.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/related_item.xml" value="0.1" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/slide_item.xml" value="0.24444444444444444" />
       </map>

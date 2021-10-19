@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đăng ký"
+        android:textSize="30dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reg_email"
+        android:hint="Email"
+        android:textColorHint="@color/black"
+        android:layout_margin="10dp"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/reg_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reg_email"
+        android:hint="Mật khẩu"
+        android:textColorHint="@color/black"
+        android:layout_margin="10dp"
+        android:inputType="textPassword"
+        android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/reg_fullname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reg_password"
+        android:hint="Họ tên"
+        android:textColorHint="@color/black"
+        android:layout_margin="10dp"
+        android:textColor="@color/black"
+        />
+
+</LinearLayout>

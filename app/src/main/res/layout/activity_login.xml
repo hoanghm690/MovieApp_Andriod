@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ui.LoginActivity"
+    android:background="@drawable/dn"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:text="ĐĂNG NHẬP"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginBottom="15dp"/>
+
+    <EditText
+        android:layout_margin="10dp"
+        android:id="@+id/log_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:textColorHint="@color/white"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/log_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_email"
+        android:textColorHint="@color/white"
+        android:textSize="20sp"
+        android:hint="Mật khẩu"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_password"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:text="Login"/>
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:text="Register"/>
+
+</LinearLayout>
