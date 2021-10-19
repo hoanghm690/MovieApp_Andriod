@@ -14,6 +14,7 @@ import com.example.movieapp.R;
 import com.example.movieapp.models.Phim;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
@@ -28,10 +29,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         movieItemClickListener = listener;
     }
 
+    public MovieAdapter(Context context, List<Phim> mData) {
+        this.context = context;
+        this.mData = mData;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
         return new MyViewHolder(view);
     }
 

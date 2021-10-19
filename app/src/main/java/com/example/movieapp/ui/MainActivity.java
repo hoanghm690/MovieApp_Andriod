@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -14,10 +15,13 @@ import com.example.movieapp.R;
 import com.example.movieapp.adapters.MovieAdapter;
 import com.example.movieapp.adapters.MovieItemClickListener;
 import com.example.movieapp.adapters.SliderPagerAdapter;
+import com.example.movieapp.adapters.ViewPagerAdapter;
 import com.example.movieapp.api.ApiUtils;
 import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.ResponseParser;
+import com.example.movieapp.ui.fragments.ActionFragment;
+import com.example.movieapp.ui.fragments.HomeFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -31,10 +35,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
     List<Phim> listSlides;
-    ViewPager sliderPager;
-    TabLayout indicator;
+    ViewPager sliderPager, viewPager;
+    TabLayout indicator, tabLayout;
     RecyclerView moviesRV;
     MovieService movieService;
+    ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +52,22 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         iniViews();
         iniSlider();
         iniPopularMovies();
+        iniCategoryMovies();
     }
 
     private void iniViews() {
         sliderPager = findViewById(R.id.slider_pager);
         indicator = findViewById(R.id.indicator);
         moviesRV = findViewById(R.id.Rv_movies);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
+    }
+
+    private void iniCategoryMovies() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new ActionFragment()).commit();
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void iniPopularMovies() {
