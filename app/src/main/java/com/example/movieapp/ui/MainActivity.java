@@ -1,15 +1,21 @@
 package com.example.movieapp.ui;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.movieapp.R;
 import com.example.movieapp.adapters.MovieAdapter;
@@ -21,11 +27,15 @@ import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.ResponseParser;
 import com.example.movieapp.ui.fragments.ActionFragment;
+import com.example.movieapp.ui.fragments.ComedyFragment;
+import com.example.movieapp.ui.fragments.DramaFragment;
 import com.example.movieapp.ui.fragments.HomeFragment;
+import com.example.movieapp.ui.fragments.WarFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,11 +45,15 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
     List<Phim> listSlides;
-    ViewPager sliderPager, viewPager;
+    ViewPager sliderPager;
+    ViewPager2 viewPager2;
     TabLayout indicator, tabLayout;
-    RecyclerView moviesRV;
+    RecyclerView moviesRV, moviesCovidRV;
     MovieService movieService;
     ViewPagerAdapter viewPagerAdapter;
+    Call<ResponseParser> call;
+    MovieAdapter movieAdapter;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,51 +66,120 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         iniViews();
         iniSlider();
         iniPopularMovies();
+        iniCovidMovies();
         iniCategoryMovies();
     }
 
     private void iniViews() {
         sliderPager = findViewById(R.id.slider_pager);
         indicator = findViewById(R.id.indicator);
-        moviesRV = findViewById(R.id.Rv_movies);
+        moviesRV = findViewById(R.id.Rv_movies_popular);
+        moviesCovidRV = findViewById(R.id.Rv_movies_covid);
         tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
+        viewPager2 = findViewById(R.id.view_pager);
     }
 
     private void iniCategoryMovies() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new ActionFragment()).commit();
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        FragmentManager fm = getSupportFragmentManager();
+        viewPagerAdapter = new ViewPagerAdapter(fm,getLifecycle());
+        viewPager2.setAdapter(viewPagerAdapter);
+        tabLayout.addTab(tabLayout.newTab().setText("Hành động"));
+        tabLayout.addTab(tabLayout.newTab().setText("Hoạt hình"));
+        tabLayout.addTab(tabLayout.newTab().setText("Lãng mạn"));
+        tabLayout.addTab(tabLayout.newTab().setText("Cổ trang"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
+
     }
 
     private void iniPopularMovies() {
         // Recyclerview Setup
-        List<Phim> listMovies = new ArrayList<>();
-        listMovies.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60de6d7faa1bb691e514b6d4_poster-anh-la-mua-xuan-cua-em.jpg", "Anh Là Mùa Xuân Của Em"));
-        listMovies.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60ddc1a2085d2983a0be88fa_poster-toi-da-lo-yeu-muc-tieu-truy-sat-cua-minh.jpg", "Tôi Đã Lỡ Yêu Mục Tiêu Truy Sát Của Mình"));
-        listMovies.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d96d5835f810953887a808_poster-meo-hay-cau-nguyen.jpg", "Meo, Hãy Cầu Nguyện"));
-        listMovies.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d6f009b1a6a7b00d2ceaf4_poster-tham-phan-ac-ma.jpg", "Thẩm Phán Ác Ma"));
-
-        MovieAdapter movieAdapter = new MovieAdapter(this, listMovies, this);
-        moviesRV.setAdapter(movieAdapter);
-        moviesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//      moviesRV.setLayoutManager(new GridLayoutManager(this, 3 ));
-    }
-
-    private void iniSlider() {
-        Call<ResponseParser> call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
         call.enqueue(new Callback<ResponseParser>() {
             @Override
             public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
                 ResponseParser responseParser = response.body();
 
                 if (responseParser != null) {
-                    listSlides = new ArrayList<Phim>();
-                    listSlides.add(responseParser.getPhim().get("phimle").get(0));
-                    listSlides.add(responseParser.getPhim().get("phimle").get(1));
-                    listSlides.add(responseParser.getPhim().get("phimle").get(2));
-                    listSlides.add(responseParser.getPhim().get("phimle").get(3));
+                    List<Phim> listMovies = new ArrayList<>();
+                    for (int i = 5; i < 15; i++) {
+                        listMovies.add(responseParser.getPhim().get("phimle").get(i));
+                    }
+                    movieAdapter = new MovieAdapter(MainActivity.this, listMovies, MainActivity.this);
+                    moviesRV.setAdapter(movieAdapter);
+                    moviesRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseParser> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void iniCovidMovies() {
+        // Recyclerview Setup
+        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call.enqueue(new Callback<ResponseParser>() {
+            @Override
+            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                ResponseParser responseParser = response.body();
+
+                if (responseParser != null) {
+                    List<Phim> listMovies = new ArrayList<>();
+                    for (int i = 15; i < 30; i++) {
+                        listMovies.add(responseParser.getPhim().get("phimle").get(i));
+                    }
+                    movieAdapter = new MovieAdapter(MainActivity.this, listMovies, MainActivity.this);
+                    moviesCovidRV.setAdapter(movieAdapter);
+                    moviesCovidRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseParser> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void iniSlider() {
+        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call.enqueue(new Callback<ResponseParser>() {
+            @Override
+            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                ResponseParser responseParser = response.body();
+
+                if (responseParser != null) {
+                    listSlides = new ArrayList<>();
+                    for (int i = 0; i < 5; i++) {
+                        listSlides.add(responseParser.getPhim().get("phimle").get(i));
+                    }
                     SliderPagerAdapter adapter = new SliderPagerAdapter(MainActivity.this, listSlides);
                     sliderPager.setAdapter(adapter);
 
@@ -141,5 +224,41 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint("Tìm kiếm...");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                movieAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                movieAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
     }
 }

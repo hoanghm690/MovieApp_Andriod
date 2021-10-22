@@ -42,14 +42,14 @@
             </com.google.android.material.tabs.TabLayout>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txtPopular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="Phim nổi bật"
+                android:text="Phim lẻ hot"
                 android:textAllCaps="true"
                 android:textColor="#add8e6"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/indicator"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/Rv_movies"
+                android:id="@+id/Rv_movies_popular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -68,7 +68,37 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"/>
+                app:layout_constraintTop_toBottomOf="@+id/txtPopular"/>
+
+            <TextView
+                android:id="@+id/txtCovid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Xem gì mùa dịch"
+                android:textAllCaps="true"
+                android:textColor="#add8e6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Rv_movies_popular"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/Rv_movies_covid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCovid"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,7 +106,11 @@
                 android:background="#0F171E"
                 android:orientation="vertical"
                 android:id="@+id/main_container"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Rv_movies_covid">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
@@ -89,13 +123,13 @@
                     app:tabMode="scrollable">
                 </com.google.android.material.tabs.TabLayout>
 
-                <androidx.viewpager.widget.ViewPager
+                <androidx.viewpager2.widget.ViewPager2
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                </androidx.viewpager.widget.ViewPager>
+                </androidx.viewpager2.widget.ViewPager2>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

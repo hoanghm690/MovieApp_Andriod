@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,16 +18,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> implements Filterable {
 
     Context context;
     List<Phim> mData;
+    List<Phim> mDataOld;
     MovieItemClickListener movieItemClickListener;
 
     public MovieAdapter(Context context, List<Phim> mData, MovieItemClickListener listener) {
         this.context = context;
         this.mData = mData;
+        this.mDataOld = mData;
         movieItemClickListener = listener;
     }
 
@@ -43,13 +48,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Phim phim = mData.get(position);
+        if(phim == null){
+            return;
+        }
         holder.TvTitle.setText(mData.get(position).getTitle());
         Picasso.with(context).load(mData.get(position).getImageUrl()).into(holder.ImgMovie);
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        if(mData != null){
+            return mData.size();
+        }
+        return 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -69,5 +81,36 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                 }
             });
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String strSearch = charSequence.toString();
+                if (strSearch.isEmpty()) {
+                    mData = mDataOld;
+                } else {
+                    List<Phim> list = new ArrayList<>();
+                    for (Phim movie : mDataOld) {
+                        if (movie.getTitle().toLowerCase().contains(strSearch.toLowerCase())){
+                            list.add(movie);
+                        }
+                    }
+                    mData = list;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mData;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mData = (List<Phim>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

@@ -20,6 +20,8 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="#ffffff"
         android:id="@+id/item_movie_title"
         android:layout_width="wrap_content"
