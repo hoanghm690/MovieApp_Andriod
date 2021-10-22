@@ -6,4 +6,12 @@
         android:icon="@drawable/icon_search"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item android:id="@+id/action_login"
+        android:title="Đăng nhập"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_logout"
+        android:title="Đăng xuất"
+        app:showAsAction="never"/>
 </menu>

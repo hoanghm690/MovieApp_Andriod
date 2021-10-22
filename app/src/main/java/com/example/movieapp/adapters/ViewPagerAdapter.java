@@ -33,7 +33,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 3:
                 return new WarFragment();
         }
-        return new HomeFragment();
+        return new ActionFragment();
     }
 
     @Override

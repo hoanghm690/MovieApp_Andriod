@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
@@ -60,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("TH Play");
+        getSupportActionBar().setTitle("TH Play");
+
         movieService = ApiUtils.getMoiveService();
 
         iniViews();
@@ -234,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint("Tìm kiếm...");
+        searchView.setQueryHint("Nhập tìm kiếm của bạn tại đây");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -260,5 +263,19 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_login:
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_logout:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

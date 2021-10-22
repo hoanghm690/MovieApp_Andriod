@@ -15,7 +15,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private ImageView MovieImg;
     private TextView MovieTitle, MovieCategory;
-//    private Toolbar toolbarMovieDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +29,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         MovieImg = findViewById(R.id.detail_movie_img);
         MovieTitle = findViewById(R.id.detail_movie_title);
         MovieCategory = findViewById(R.id.detail_movie_gerne);
-//        toolbarMovieDetail = findViewById(R.id.toolbar_movie_detail);
+
+        getSupportActionBar().setTitle(movieTitle);
 
         MovieTitle.setText(movieTitle);
         Picasso.with(this).load(movieImgURL).into(MovieImg);
         MovieCategory.setText(movieCate);
-
-//        ActionToolbar();
     }
-
-//    private void ActionToolbar() {
-//        toolbarMovieDetail.setTitle("Chi tiết phim");
-//        setSupportActionBar(toolbarMovieDetail);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        toolbarMovieDetail.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//    }
 }
