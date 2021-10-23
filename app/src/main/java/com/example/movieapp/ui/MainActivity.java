@@ -3,6 +3,8 @@ package com.example.movieapp.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setTitle("TH Play");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
 
         movieService = ApiUtils.getMoiveService();
 

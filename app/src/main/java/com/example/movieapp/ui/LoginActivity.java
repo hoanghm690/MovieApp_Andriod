@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     EditText Email,Password;
-    Button register,login;
+    TextView register,login;
     ProgressDialog progressDialog;
 
     @Override
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         final String email = Email.getText().toString().trim();
         final String password = Password.getText().toString().trim();
         if(email.isEmpty() || password.isEmpty()){
-            massage("Không được bỏ trống thông tin");
+            massage("Vui lòng nhập thông tin để đăng nhập");
         }else{
             progressDialog.show();
             StringRequest request = new StringRequest(Request.Method.POST, Urls.LOGIN_URL,
@@ -87,9 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     }, error -> {
-                        progressDialog.dismiss();
-                        massage(error.getMessage());
-                    }){
+                progressDialog.dismiss();
+                massage(error.getMessage());
+            }){
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String,String> params = new HashMap<>();
@@ -121,23 +122,23 @@ public class LoginActivity extends AppCompatActivity {
                 massage("Some fiels are Empty..");
                 progressDialog.dismiss();
             }else {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.REGISTER_URL,
-                    response -> {
-                        progressDialog.dismiss();
-                        massage(response);
-                    }, error -> {
-                        progressDialog.dismiss();
-                        massage(error.getMessage());
-                    }){
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String,String> params = new HashMap<>();
-                    params.put("fullname",fullname);
-                    params.put("email",email);
-                    params.put("password",password);
-                    return params;
-                }
-            };
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.REGISTER_URL,
+                        response -> {
+                            progressDialog.dismiss();
+                            massage(response);
+                        }, error -> {
+                    progressDialog.dismiss();
+                    massage(error.getMessage());
+                }){
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("fullname",fullname);
+                        params.put("email",email);
+                        params.put("password",password);
+                        return params;
+                    }
+                };
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(stringRequest);
             }
