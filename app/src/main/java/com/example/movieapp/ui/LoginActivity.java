@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     EditText Email,Password;
-    Button register,login;
+    TextView register,login;
     ProgressDialog progressDialog;
 
     @Override
