@@ -17,6 +17,13 @@ public class Phim {
         this.title = title;
     }
 
+    public Phim(String category, String imageUrl, String title, String url) {
+        this.category = category;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.url = url;
+    }
+
     public Phim(String category, List<Episode> episode, String imageUrl, String title, String url) {
         this.category = category;
         this.episode = episode;

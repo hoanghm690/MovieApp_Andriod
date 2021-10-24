@@ -20,8 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
+            tools:src="@tools:sample/backgrounds/scenic"/>
 
         <ImageView
             android:id="@+id/imageView"
@@ -33,17 +32,15 @@
             app:layout_constraintTop_toTopOf="@+id/detail_movie_cover" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/play_fab"
+            android:id="@+id/play_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#60A3B8"
             android:clickable="true"
-            android:src="@drawable/detail_play_button"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
-
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            android:src="@drawable/ic_baseline_play_arrow_24" />
         <ImageView
             android:id="@+id/detail_movie_img"
             android:layout_width="125dp"
@@ -55,9 +52,11 @@
             app:layout_constraintBottom_toBottomOf="@+id/detail_movie_cover"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_cover"
-            app:srcCompat="@drawable/detail_poster" />
+            android:src="@drawable/ic_launcher_background" />
 
         <TextView
+            android:maxLines="3"
+            android:ellipsize="end"
             android:id="@+id/detail_movie_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -66,8 +65,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:text="Joker"
-            android:textSize="30dp"
+            android:text="Anh Là Mùa Xuân Của Em - You Are My Spring (2021)"
+            android:textSize="18dp"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/detail_movie_img"
@@ -75,59 +74,41 @@
 
         <TextView
             android:id="@+id/detail_movie_gerne"
-            android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:text="Action"
             android:textColor="@color/white"
-            android:textSize="18dp"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_movie_img"
-            app:layout_constraintStart_toEndOf="@+id/detail_movie_img" />
-
-        <TextView
-            android:id="@+id/detail_movie_time"
+            android:textSize="16dp"
             android:textStyle="italic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="1h30m"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_movie_img"
-            app:layout_constraintStart_toEndOf="@+id/detail_movie_gerne" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_save_my_list"
+            app:layout_constraintStart_toEndOf="@+id/detail_movie_img"
+            app:layout_constraintTop_toBottomOf="@+id/detail_movie_title" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_save_my_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
             android:layout_marginTop="4dp"
-            android:text="Add"
+            android:text="Lưu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_img"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
+            android:padding="16dp"
             android:id="@+id/detail_related"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="16dp"
-            android:text="Phim Liên Quan"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintTop_toBottomOf="@id/button"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:background="@color/bg_blue"
+            android:text="PHIM LIÊN QUAN"
+            android:textColor="@color/light_blue"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_save_my_list" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/detail_related_movies"

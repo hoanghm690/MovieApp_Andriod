@@ -10,4 +10,6 @@
     <color name="primary">#151c25</color>
     <color name="primary_dark">#151c25</color>
     <color name="accent">#f1b814</color>
+    <color name="bg_blue">#1a242f</color>
+    <color name="light_blue">#566f9a</color>
 </resources>

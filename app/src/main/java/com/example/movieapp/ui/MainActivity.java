@@ -120,6 +120,36 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
+    private void iniSlider() {
+        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call.enqueue(new Callback<ResponseParser>() {
+            @Override
+            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                ResponseParser responseParser = response.body();
+
+                if (responseParser != null) {
+                    listSlides = new ArrayList<>();
+                    for (int i = 0; i < 5; i++) {
+                        listSlides.add(responseParser.getPhim().get("phimle").get(i));
+                    }
+                    SliderPagerAdapter adapter = new SliderPagerAdapter(MainActivity.this, listSlides);
+                    sliderPager.setAdapter(adapter);
+
+                    // setup timer
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
+                    indicator.setupWithViewPager(sliderPager, true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseParser> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void iniPopularMovies() {
         // Recyclerview Setup
         call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
@@ -174,42 +204,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         });
     }
 
-    private void iniSlider() {
-        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
-        call.enqueue(new Callback<ResponseParser>() {
-            @Override
-            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
-                ResponseParser responseParser = response.body();
 
-                if (responseParser != null) {
-                    listSlides = new ArrayList<>();
-                    for (int i = 0; i < 5; i++) {
-                        listSlides.add(responseParser.getPhim().get("phimle").get(i));
-                    }
-                    SliderPagerAdapter adapter = new SliderPagerAdapter(MainActivity.this, listSlides);
-                    sliderPager.setAdapter(adapter);
-
-                    // setup timer
-                    Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
-                    indicator.setupWithViewPager(sliderPager, true);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseParser> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     @Override
     public void onMovieClick(Phim movie, ImageView movieImageView) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("title", movie.getTitle());
-        intent.putExtra("imgURl", movie.getImageUrl());
+        intent.putExtra("imgURL", movie.getImageUrl());
         intent.putExtra("category", movie.getCategory());
+        intent.putExtra("url", movie.getUrl());
         startActivity(intent);
 
         Toast.makeText(this, "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();

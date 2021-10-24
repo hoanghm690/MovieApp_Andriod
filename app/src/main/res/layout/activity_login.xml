@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="30dp"
-                android:text="TH PLay"
+                android:text="TH Play"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_marginBottom="15dp"/>

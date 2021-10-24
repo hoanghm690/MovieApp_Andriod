@@ -96,6 +96,7 @@ public class ActionFragment extends Fragment implements MovieItemClickListener {
         intent.putExtra("title", movie.getTitle());
         intent.putExtra("imgURl", movie.getImageUrl());
         intent.putExtra("category", movie.getCategory());
+        intent.putExtra("url", movie.getUrl());
         startActivity(intent);
 
         Toast.makeText(this.getContext(), "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
