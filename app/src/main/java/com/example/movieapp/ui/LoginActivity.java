@@ -1,15 +1,20 @@
 package com.example.movieapp.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,13 +37,12 @@ public class LoginActivity extends AppCompatActivity {
     EditText Email,Password;
     TextView register,login;
     ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("TH Play");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
         setContentView(R.layout.activity_login);
         Email = findViewById(R.id.log_email);
         Password = findViewById(R.id.log_password);
@@ -73,9 +77,13 @@ public class LoginActivity extends AppCompatActivity {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     String fullname_profile = object.getString("fullname");
                                     String email_profile = object.getString("email");
-                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                    intent.putExtra("fullname",fullname_profile);
-                                    intent.putExtra("email",email_profile);
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    SharedPreferences sharedPref = getSharedPreferences("User",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("UserName", fullname_profile);
+                                    editor.putString("UserEmail", email_profile);
+                                    editor.putBoolean("isLogin", true);
+                                    editor.apply();
                                     startActivity(intent);finish();
                                     massage("Đăng nhập thành công");
                                 }
@@ -147,9 +155,17 @@ public class LoginActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == android.R.id.home){
+            finish();
+        }
+        return true;
+    }
+
     public void massage(String massage){
         Toast.makeText(this, massage, Toast.LENGTH_LONG).show();
     }

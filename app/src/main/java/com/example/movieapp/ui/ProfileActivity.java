@@ -1,13 +1,19 @@
 package com.example.movieapp.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -30,9 +36,9 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("TH Play");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
         setContentView(R.layout.activity_profile);
 
         progressDialog = new ProgressDialog(this);
@@ -43,11 +49,10 @@ public class ProfileActivity extends AppCompatActivity {
         Email = findViewById(R.id.p_email);
         update = findViewById(R.id.p_update);
         cPass = findViewById(R.id.p_change_pass);
-        logout = findViewById(R.id.p_logout);
 
-        Intent i =getIntent();
-        String mFullname = i.getStringExtra("fullname");
-        final String mEmail = i.getStringExtra("email");
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        String mFullname = sharedPref.getString("UserName",null);
+        final String mEmail = sharedPref.getString("UserEmail",null);
 
         Fullname.setText(mFullname);
         Email.setText(mEmail);
@@ -111,6 +116,13 @@ public class ProfileActivity extends AppCompatActivity {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_URL,
                         response -> {
                             progressDialog.dismiss();
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.remove("UserName");
+                            editor.remove("UserEmail");
+                            editor.putString("UserName", fullname);
+                            editor.putString("UserEmail", email);
+                            editor.putBoolean("isLogin", true);
+                            editor.apply();
                             massage(response);
                         }, error -> {
                             progressDialog.dismiss();
@@ -129,15 +141,17 @@ public class ProfileActivity extends AppCompatActivity {
                 queue.add(stringRequest);
             }
         });
-
-        logout.setOnClickListener(view -> {
-            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
     }
     public void massage(String massage){
         Toast.makeText(this, massage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == android.R.id.home){
+            finish();
+        }
+        return true;
     }
 }

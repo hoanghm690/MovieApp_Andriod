@@ -3,6 +3,7 @@ package com.example.movieapp.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -53,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     Call<ResponseParser> call;
     MovieAdapter movieAdapter;
     SearchView searchView;
+    MenuItem itemLogin;
+    MenuItem itemProfile;
+    MenuItem itemLogout;
+    MenuItem itemName;
+    MenuItem itemMyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,37 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         iniPopularMovies();
         iniCovidMovies();
         iniCategoryMovies();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        itemLogin = menu.findItem(R.id.action_login);
+        itemProfile = menu.findItem(R.id.action_profile);
+        itemLogout = menu.findItem(R.id.action_logout);
+        itemName = menu.findItem(R.id.action_name);
+        itemMyList = menu.findItem(R.id.action_mylist);
+
+        SharedPreferences sharedPref = getSharedPreferences("User",Context.MODE_PRIVATE);
+        boolean wasLogin = sharedPref.getBoolean("isLogin",false);
+        String username = sharedPref.getString("UserName",null);
+
+        if(wasLogin){
+            itemLogin.setVisible(false);
+            itemProfile.setVisible(true);
+            itemLogout.setVisible(true);
+            itemName.setVisible(true);
+            itemName.setTitle("Xin chào, "+username);
+            itemMyList.setVisible(true);
+        }
+        else {
+            itemLogin.setVisible(true);
+            itemProfile.setVisible(false);
+            itemLogout.setVisible(false);
+            itemName.setVisible(false);
+            itemMyList.setVisible(false);
+        }
+        return true;
     }
 
     private void iniViews() {
@@ -273,7 +310,28 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return true;
+
+            case R.id.action_profile:
+                Intent intentProfile = new Intent(this, ProfileActivity.class);
+                startActivity(intentProfile);
+                return true;
+
+            case R.id.action_mylist:
+                Intent intentMyList = new Intent(this, MyListActivity.class);
+                startActivity(intentMyList);
+                return true;
+
+
             case R.id.action_logout:
+                SharedPreferences sharedPref = getSharedPreferences("User",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.remove("UserName");
+                editor.remove("UserEmail");
+                editor.remove("isLogin");
+                editor.commit();
+                Intent intentMain = new Intent(this, MainActivity.class);
+                startActivity(intentMain);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

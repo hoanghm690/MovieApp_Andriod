@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_search"
         android:title="@string/action_search"
@@ -7,9 +8,23 @@
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
+    <item android:id="@+id/action_name"
+        app:showAsAction="never"
+        app:actionViewClass="android.media.tv.TvView"
+        android:title="Xin chào,name"
+        />
     <item android:id="@+id/action_login"
         android:title="Đăng nhập"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/action_mylist"
+        app:showAsAction="never"
+        android:title="Danh sách phim của tôi"/>
+
+    <item
+        android:id="@+id/action_profile"
+        app:showAsAction="never"
+        android:title="Thông tin người dùng"/>
 
     <item android:id="@+id/action_logout"
         android:title="Đăng xuất"
