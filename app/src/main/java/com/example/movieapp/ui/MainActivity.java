@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -15,13 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.movieapp.R;
+import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
 import com.example.movieapp.adapters.MovieItemClickListener;
 import com.example.movieapp.adapters.SliderPagerAdapter;
@@ -30,16 +31,10 @@ import com.example.movieapp.api.ApiUtils;
 import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.ResponseParser;
-import com.example.movieapp.ui.fragments.ActionFragment;
-import com.example.movieapp.ui.fragments.ComedyFragment;
-import com.example.movieapp.ui.fragments.DramaFragment;
-import com.example.movieapp.ui.fragments.HomeFragment;
-import com.example.movieapp.ui.fragments.WarFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -121,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     }
 
     private void iniSlider() {
-        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call = movieService.getListMovies(Urls.API_PARAMS);
         call.enqueue(new Callback<ResponseParser>() {
             @Override
             public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
@@ -132,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     for (int i = 0; i < 5; i++) {
                         listSlides.add(responseParser.getPhim().get("phimle").get(i));
                     }
-                    SliderPagerAdapter adapter = new SliderPagerAdapter(MainActivity.this, listSlides);
+                    SliderPagerAdapter adapter = new SliderPagerAdapter(MainActivity.this, listSlides, MainActivity.this);
                     sliderPager.setAdapter(adapter);
 
                     // setup timer
@@ -152,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     private void iniPopularMovies() {
         // Recyclerview Setup
-        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call = movieService.getListMovies(Urls.API_PARAMS);
         call.enqueue(new Callback<ResponseParser>() {
             @Override
             public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
@@ -179,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     private void iniCovidMovies() {
         // Recyclerview Setup
-        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+        call = movieService.getListMovies(Urls.API_PARAMS);
         call.enqueue(new Callback<ResponseParser>() {
             @Override
             public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {

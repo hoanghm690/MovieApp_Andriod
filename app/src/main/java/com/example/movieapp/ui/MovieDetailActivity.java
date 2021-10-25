@@ -11,6 +11,8 @@ import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.ResponseParser;
 import com.squareup.picasso.Picasso;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,6 +46,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
+
         movieService = ApiUtils.getMoiveService();
 
         iniMovieDetail();
@@ -71,28 +75,28 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     void iniMovieRelated() {
-        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
-        call.enqueue(new Callback<ResponseParser>() {
-            @Override
-            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
-                ResponseParser responseParser = response.body();
-
-                if (responseParser != null) {
-                    listMovies = new ArrayList<>();
-                    for (int i = 5; i < 10; i++) {
-                        listMovies.add(responseParser.getPhim().get("phimle").get(i));
-                    }
-                    movieAdapter = new MovieAdapter(MovieDetailActivity.this, listMovies);
-                    RvMoiveRelated.setAdapter(movieAdapter);
-                    RvMoiveRelated.setLayoutManager(new GridLayoutManager(MovieDetailActivity.this, 3));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseParser> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(MovieDetailActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+//        call.enqueue(new Callback<ResponseParser>() {
+//            @Override
+//            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+//                ResponseParser responseParser = response.body();
+//
+//                if (responseParser != null) {
+//                    listMovies = new ArrayList<>();
+//                    for (int i = 5; i < 10; i++) {
+//                        listMovies.add(responseParser.getPhim().get("phimle").get(i));
+//                    }
+//                    movieAdapter = new MovieAdapter(MovieDetailActivity.this, listMovies);
+//                    RvMoiveRelated.setAdapter(movieAdapter);
+//                    RvMoiveRelated.setLayoutManager(new GridLayoutManager(MovieDetailActivity.this, 3));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseParser> call, Throwable t) {
+//                t.printStackTrace();
+//                Toast.makeText(MovieDetailActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

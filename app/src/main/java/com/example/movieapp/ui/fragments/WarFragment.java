@@ -43,7 +43,7 @@ public class WarFragment extends Fragment {
         dataHolder.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d96d5835f810953887a808_poster-meo-hay-cau-nguyen.jpg", "Meo, Hãy Cầu Nguyện"));
         dataHolder.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d6f009b1a6a7b00d2ceaf4_poster-tham-phan-ac-ma.jpg", "Thẩm Phán Ác Ma"));
 
-        recyclerView.setAdapter(new MovieAdapter(this.getContext(), dataHolder));
+//        recyclerView.setAdapter(new MovieAdapter(this.getContext(), dataHolder));
 
         return view;
     }

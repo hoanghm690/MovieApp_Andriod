@@ -57,36 +57,35 @@ public class ActionFragment extends Fragment implements MovieItemClickListener {
         View view = inflater.inflate(R.layout.fragment_action, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewAction);
 
-        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
-        call.enqueue(new Callback<ResponseParser>() {
-            @Override
-            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
-                ResponseParser responseParser = response.body();
+//        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
+//        call.enqueue(new Callback<ResponseParser>() {
+//            @Override
+//            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+//                ResponseParser responseParser = response.body();
+//
+//                if (responseParser != null) {
+//                    dataHolder = new ArrayList<>();
+//                    movies = new ArrayList<>();
+//                    movies = responseParser.getPhim().get("phimle");
+//                    for (int i = 0; i < 30; i++) {
+//                        if (movies.get(i).getCategory().contains("Phim hành động")) {
+//                            dataHolder.add(movies.get(i));
+//                        }
+//                    }
+//                    movieAdapter = new MovieAdapter(getActivity(), dataHolder, ActionFragment.this);
+//                    recyclerView.setAdapter(movieAdapter);
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseParser> call, Throwable t) {
+//                t.printStackTrace();
+//                Toast.makeText(getActivity(), "Call api error", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-                if (responseParser != null) {
-                    dataHolder = new ArrayList<>();
-                    movies = new ArrayList<>();
-                    movies = responseParser.getPhim().get("phimle");
-                    for (int i = 0; i < 30; i++) {
-                        if (movies.get(i).getCategory().contains("Phim hành động")) {
-                            dataHolder.add(movies.get(i));
-                        }
-                    }
-                    movieAdapter = new MovieAdapter(getActivity(), dataHolder, ActionFragment.this);
-                    recyclerView.setAdapter(movieAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-//                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseParser> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(getActivity(), "Call api error", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        recyclerView.setAdapter(new MovieAdapter(this.getContext(), dataHolder));
+        recyclerView.setAdapter(new MovieAdapter(this.getContext(), dataHolder, ActionFragment.this));
         return view;
     }
 

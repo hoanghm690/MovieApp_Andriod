@@ -5,6 +5,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface MovieService {
-    @GET("/v2/key-value-stores/QubTry45OOCkTyohU/records/LATEST")
+    @GET("db")
     Call<ResponseParser> getListMovies(@Query("fbclid") String fbclid);
 }
