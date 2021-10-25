@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         viewPager2.setAdapter(viewPagerAdapter);
         tabLayout.addTab(tabLayout.newTab().setText("Hành động"));
         tabLayout.addTab(tabLayout.newTab().setText("Hoạt hình"));
-        tabLayout.addTab(tabLayout.newTab().setText("Lãng mạn"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tình cảm"));
         tabLayout.addTab(tabLayout.newTab().setText("Cổ trang"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

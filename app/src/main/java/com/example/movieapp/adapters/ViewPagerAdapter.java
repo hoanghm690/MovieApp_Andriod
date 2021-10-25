@@ -9,7 +9,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.movieapp.ui.fragments.ActionFragment;
 import com.example.movieapp.ui.fragments.ComedyFragment;
 import com.example.movieapp.ui.fragments.DramaFragment;
-import com.example.movieapp.ui.fragments.HomeFragment;
 import com.example.movieapp.ui.fragments.WarFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {

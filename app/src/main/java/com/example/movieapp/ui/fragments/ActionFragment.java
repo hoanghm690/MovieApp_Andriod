@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.movieapp.R;
+import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
 import com.example.movieapp.adapters.MovieItemClickListener;
 import com.example.movieapp.adapters.ViewPagerAdapter;
@@ -34,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ActionFragment extends Fragment implements MovieItemClickListener {
+public class ActionFragment extends Fragment {
 
     RecyclerView recyclerView;
     List<Phim> dataHolder;
@@ -57,47 +58,38 @@ public class ActionFragment extends Fragment implements MovieItemClickListener {
         View view = inflater.inflate(R.layout.fragment_action, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewAction);
 
-//        call = movieService.getListMovies("IwAR1k4WlQbyCdrKT7ITP-6RrfGhyIk-IFtByEE2uM_vBn_PWgXASG0mnaXF0");
-//        call.enqueue(new Callback<ResponseParser>() {
-//            @Override
-//            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
-//                ResponseParser responseParser = response.body();
-//
-//                if (responseParser != null) {
-//                    dataHolder = new ArrayList<>();
-//                    movies = new ArrayList<>();
-//                    movies = responseParser.getPhim().get("phimle");
-//                    for (int i = 0; i < 30; i++) {
-//                        if (movies.get(i).getCategory().contains("Phim hành động")) {
-//                            dataHolder.add(movies.get(i));
-//                        }
-//                    }
-//                    movieAdapter = new MovieAdapter(getActivity(), dataHolder, ActionFragment.this);
-//                    recyclerView.setAdapter(movieAdapter);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseParser> call, Throwable t) {
-//                t.printStackTrace();
-//                Toast.makeText(getActivity(), "Call api error", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        iniMoviesAction();
 
-        recyclerView.setAdapter(new MovieAdapter(this.getContext(), dataHolder, ActionFragment.this));
         return view;
     }
 
-    @Override
-    public void onMovieClick(Phim movie, ImageView movieImageView) {
-        Intent intent = new Intent(this.getContext(), MovieDetailActivity.class);
-        intent.putExtra("title", movie.getTitle());
-        intent.putExtra("imgURl", movie.getImageUrl());
-        intent.putExtra("category", movie.getCategory());
-        intent.putExtra("url", movie.getUrl());
-        startActivity(intent);
+    void iniMoviesAction() {
+        call = movieService.getListMovies(Urls.API_PARAMS);
+        call.enqueue(new Callback<ResponseParser>() {
+            @Override
+            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                ResponseParser responseParser = response.body();
 
-        Toast.makeText(this.getContext(), "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
+                if (responseParser != null) {
+                    dataHolder = new ArrayList<>();
+                    movies = new ArrayList<>();
+                    movies = responseParser.getPhim().get("phimle");
+                    for (int i = 0; i < movies.size(); i++) {
+                        if (movies.get(i).getCategory().contains("Phim hành động")) {
+                            dataHolder.add(movies.get(i));
+                        }
+                    }
+                    movieAdapter = new MovieAdapter(getActivity(), dataHolder, (MovieItemClickListener) getActivity());
+                    recyclerView.setAdapter(movieAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseParser> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getActivity(), "Call api error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

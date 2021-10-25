@@ -1,28 +1,49 @@
 package com.example.movieapp.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.example.movieapp.R;
+import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
+import com.example.movieapp.adapters.MovieItemClickListener;
+import com.example.movieapp.adapters.ViewPagerAdapter;
+import com.example.movieapp.api.ApiUtils;
+import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
+import com.example.movieapp.models.ResponseParser;
+import com.example.movieapp.ui.MainActivity;
+import com.example.movieapp.ui.MovieDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class WarFragment extends Fragment {
 
     RecyclerView recyclerView;
     List<Phim> dataHolder;
+    List<Phim> movies;
 
+    MovieService movieService;
+    Call<ResponseParser> call;
+    MovieAdapter movieAdapter;
 
     public WarFragment() {
         // Required empty public constructor
@@ -31,20 +52,44 @@ public class WarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        movieService = ApiUtils.getMoiveService();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_war, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewWar);
-//        recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        dataHolder = new ArrayList<>();
-        dataHolder.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60de6d7faa1bb691e514b6d4_poster-anh-la-mua-xuan-cua-em.jpg", "Anh Là Mùa Xuân Của Em"));
-        dataHolder.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60ddc1a2085d2983a0be88fa_poster-toi-da-lo-yeu-muc-tieu-truy-sat-cua-minh.jpg", "Tôi Đã Lỡ Yêu Mục Tiêu Truy Sát Của Mình"));
-        dataHolder.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d96d5835f810953887a808_poster-meo-hay-cau-nguyen.jpg", "Meo, Hãy Cầu Nguyện"));
-        dataHolder.add(new Phim("https://www.ssphim.net/static/5fe2d564b3fa6403ffa11d1c/60d6f009b1a6a7b00d2ceaf4_poster-tham-phan-ac-ma.jpg", "Thẩm Phán Ác Ma"));
-
-//        recyclerView.setAdapter(new MovieAdapter(this.getContext(), dataHolder));
+        iniMoviesComedy();
 
         return view;
+    }
+
+    void iniMoviesComedy() {
+        call = movieService.getListMovies(Urls.API_PARAMS);
+        call.enqueue(new Callback<ResponseParser>() {
+            @Override
+            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                ResponseParser responseParser = response.body();
+
+                if (responseParser != null) {
+                    dataHolder = new ArrayList<>();
+                    movies = new ArrayList<>();
+                    movies = responseParser.getPhim().get("phimle");
+                    for (int i = 0; i < movies.size(); i++) {
+                        if (movies.get(i).getCategory().contains("Phim cổ trang")) {
+                            dataHolder.add(movies.get(i));
+                        }
+                    }
+                    movieAdapter = new MovieAdapter(getActivity(), dataHolder, (MovieItemClickListener) getActivity());
+                    recyclerView.setAdapter(movieAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseParser> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getActivity(), "Call api error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
