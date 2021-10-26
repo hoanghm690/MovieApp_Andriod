@@ -1,5 +1,6 @@
 package com.example.movieapp.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.movieapp.R;
@@ -11,6 +12,7 @@ import com.example.movieapp.api.ApiUtils;
 import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.ResponseParser;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,12 +47,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
     private MovieService movieService;
     private Call<ResponseParser> call;
     private List<Phim> listMovies, movies;
+    private FloatingActionButton fab_player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
 
         movieService = ApiUtils.getMoiveService();
@@ -63,12 +68,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         String movieTitle = getIntent().getExtras().getString("title");
         String movieImgURL = getIntent().getExtras().getString("imgURL");
         String movieCate = getIntent().getExtras().getString("category");
+        String movieEpisode = getIntent().getExtras().getString("episode");
 
         MovieImg = findViewById(R.id.detail_movie_img);
         MovieTitle = findViewById(R.id.detail_movie_title);
         MovieCategory = findViewById(R.id.detail_movie_gerne);
         MovieCoverImg = findViewById(R.id.detail_movie_cover);
         RvMoiveRelated = findViewById(R.id.detail_related_movies);
+        fab_player = findViewById(R.id.fab_play_movie);
 
         getSupportActionBar().setTitle(movieTitle);
 
@@ -76,6 +83,15 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         Picasso.with(this).load(movieImgURL).into(MovieImg);
         Picasso.with(this).load(movieImgURL).into(MovieCoverImg);
         MovieCategory.setText(movieCate);
+
+        fab_player.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MovieDetailActivity.this, MoviePlayerActivity.class);
+                intent.putExtra("episode", movieEpisode);
+                startActivity(intent);
+            }
+        });
     }
 
     void iniMovieRelated() {
@@ -96,7 +112,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
                             listMovies.add(movies.get(i));
                         }
                     }
-                    Log.v("list",""+listMovies);
                     movieAdapter = new MovieAdapter(MovieDetailActivity.this, listMovies,MovieDetailActivity.this);
                     RvMoiveRelated.setAdapter(movieAdapter);
                     RvMoiveRelated.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -117,9 +132,18 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         intent.putExtra("title", movie.getTitle());
         intent.putExtra("imgURL", movie.getImageUrl());
         intent.putExtra("category", movie.getCategory());
-        intent.putExtra("url", movie.getUrl());
+        intent.putExtra("episode", movie.getEpisode().get(0).getUrl());
         startActivity(intent);
 
         Toast.makeText(this, "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == android.R.id.home){
+            finish();
+        }
+        return true;
     }
 }

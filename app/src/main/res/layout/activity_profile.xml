@@ -27,9 +27,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
                 app:cardBackgroundColor="#1C1B1B"
                 app:cardCornerRadius="50dp">
 
@@ -47,7 +48,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:text="Thông Tin Người Dùng"
+                        android:text="Thông Tin Cá Nhân"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -101,8 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/icon"
                             android:background="@android:color/transparent"
-                            android:hint="fullname"
-                            android:maxLength="10"
+                            android:hint="Họ tên"
                             android:maxLines="1"
                             android:paddingLeft="17dp"
                             android:paddingTop="15dp"
@@ -195,80 +195,8 @@
                             android:textSize="20sp" />
 
                     </RelativeLayout>
-
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#00ADC1"
-                    app:cardElevation="10dp">
-
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/p_logout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:layout_weight="0.6"
-                    app:cardBackgroundColor="#1C1B1B"
-                    app:cardElevation="10dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp">
-
-                        <ImageView
-                            android:id="@+id/imglogout"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/logout" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/imglogout"
-
-                            android:layout_centerInParent="true"
-                            android:layout_marginBottom="5dp"
-                            android:text="Đăng xuất"
-                            android:textColor="@color/white"
-                            android:textSize="20sp" />
-
-                    </RelativeLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#00ADC1"
-                    app:cardElevation="10dp">
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
-
-
 </RelativeLayout>

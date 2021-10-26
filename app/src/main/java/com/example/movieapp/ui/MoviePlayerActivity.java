@@ -2,63 +2,77 @@ package com.example.movieapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
+import android.util.Log;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.movieapp.R;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 public class MoviePlayerActivity extends AppCompatActivity {
 
-    private PlayerView playerView;
-    private SimpleExoPlayer simpleExoPlayer;
-    public static final String VIDEO_URL = "https://player.vimeo.com/external/587458036.sd.mp4?s=ddcac4b38ae6c8cf056710392416e9199ba23b07&profile_id=165&oauth2_token_id=57447761";
+    private WebView webView;
+    private String USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setFullScreen();
-
         setContentView(R.layout.activity_movie_player);
+
+        iniPlayer();
         hideActionBar();
-
-        iniExoPlayer();
     }
-
     private void hideActionBar() {
         getSupportActionBar().hide();
     }
 
-    private void setFullScreen() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    private void iniPlayer() {
+        String VIDEO_URL = getIntent().getExtras().getString("episode");
+//        String videoIf = "<html><body style=\"margin: 0; padding: 0\"><iframe width=\"100%\" height=\"100%\" " +
+//                "src=\""+VIDEO_URL+"\" type=\"text/html\" frameborder=\"0\"></iframe><body><html>";
+//        Log.v("abc",""+videoIf);
+        webView = findViewById(R.id.movie_player);
+        WebSettings webSettings = webView.getSettings();
 
-    }
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setPluginState(WebSettings.PluginState.ON);
+        webSettings.setAllowContentAccess(true);
+        webSettings.setAllowFileAccess(true);
 
-    private void iniExoPlayer() {
-        playerView = findViewById(R.id.movie_exo_player);
-        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
-        playerView.setPlayer(simpleExoPlayer);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "TH Play"));
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(VIDEO_URL));
-        simpleExoPlayer.prepare(videoSource);
-        simpleExoPlayer.setPlayWhenReady(true);
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 16) {
+            webSettings.setMediaPlaybackRequiresUserGesture(false);
+        }
+
+        webSettings.setUserAgentString(USERAGENT);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setSupportMultipleWindows(true);
+        webSettings.setLoadWithOverviewMode(true);
+
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                webView.loadUrl("javascript:(function() { document.getElementsByTagName(\"video\")[0].play(); })()");
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.loadUrl(VIDEO_URL);
+//        webView.loadData(videoIf, "text/html", "UTF-8");
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        simpleExoPlayer.release();
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        }else{
+            super.onBackPressed();
+        }
     }
 }

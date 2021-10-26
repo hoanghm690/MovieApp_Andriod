@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,6 +18,7 @@
                 android:layout_marginTop="50dp"
                 android:textSize="30dp"
                 android:text="ĐĂNG KÝ"
+                android:inputType="textEmailAddress"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -36,15 +38,15 @@
                     android:layout_toRightOf="@+id/username_icon"
                     android:background="@android:color/transparent"
                     android:hint="Email"
-                    android:textColorHint="@color/white"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:paddingLeft="17dp"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textCursorDrawable="@drawable/cursor_color"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"/>
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/username_icon"
@@ -63,23 +65,36 @@
                 android:layout_marginRight="30dp"
                 android:background="@drawable/black_border_rounded_cornwe">
 
-                <EditText
-                    android:id="@+id/reg_password"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/icon"
-                    android:background="@android:color/transparent"
-                    android:hint="Mật khẩu"
-                    android:inputType="textPassword"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:paddingLeft="17dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:textColorHint="@color/white"
-                    android:textCursorDrawable="@drawable/cursor_color"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"/>
+                    app:passwordToggleEnabled="true"
+                    android:layout_marginLeft="35dp"
+                    app:passwordToggleTint="@color/white"
+                    app:hintAnimationEnabled="false"
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="false"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/reg_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:textSize="15sp"
+                        android:hint="Mật khẩu"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textColorHighlight="@color/white"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:background="@android:color/transparent"
+                        tools:ignore="HardcodedText" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
                     android:id="@+id/icon"
@@ -106,16 +121,14 @@
                     android:layout_toRightOf="@+id/icon1"
                     android:background="@android:color/transparent"
                     android:hint="Họ và tên"
-                    android:textColorHint="@color/white"
-                    android:inputType="textPassword"
-                    android:maxLength="10"
                     android:maxLines="1"
                     android:paddingLeft="17dp"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textCursorDrawable="@drawable/cursor_color"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"/>
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/icon1"
@@ -127,5 +140,4 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

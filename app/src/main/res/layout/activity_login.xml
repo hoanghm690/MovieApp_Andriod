@@ -19,20 +19,10 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="30dp"
-                android:text="TH Play"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:layout_marginBottom="15dp"/>
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 app:cardBackgroundColor="#1C1B1B"
                 android:alpha="0.9"
                 app:cardCornerRadius="50dp"
@@ -92,21 +82,34 @@
                         android:layout_marginRight="30dp"
                         android:background="@drawable/white_border_rounded_cornwe">
 
-                        <EditText
-                            android:id="@+id/log_password"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/icon"
-                            android:background="@android:color/transparent"
-                            android:hint="Password"
-                            android:inputType="textPassword"
-                            android:maxLength="10"
-                            android:maxLines="1"
-                            android:paddingLeft="17dp"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp"
-                            android:textCursorDrawable="@drawable/cursor_color"
-                            android:textSize="15sp" />
+                            app:passwordToggleEnabled="true"
+                            app:hintAnimationEnabled="false"
+                            android:paddingLeft="35dp"
+                            app:boxBackgroundMode="none"
+                            app:hintEnabled="false"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/log_password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:maxLength="20"
+                                android:maxLines="1"
+                                android:textSize="15sp"
+                                android:hint="Mật khẩu"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/white"
+                                android:paddingTop="15dp"
+                                android:paddingBottom="15dp"
+                                android:textCursorDrawable="@drawable/cursor_color"
+                                android:background="@android:color/transparent"
+                                tools:ignore="HardcodedText" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <ImageView
                             android:id="@+id/icon"
