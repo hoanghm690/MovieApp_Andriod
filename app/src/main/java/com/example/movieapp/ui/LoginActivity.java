@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,11 +78,13 @@ public class LoginActivity extends AppCompatActivity {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     String fullname_profile = object.getString("fullname");
                                     String email_profile = object.getString("email");
+                                    Integer userId_profile = object.getInt("userID");
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     SharedPreferences sharedPref = getSharedPreferences("User",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putString("UserName", fullname_profile);
                                     editor.putString("UserEmail", email_profile);
+                                    editor.putInt("UserID", userId_profile);
                                     editor.putBoolean("isLogin", true);
                                     editor.apply();
                                     startActivity(intent);finish();
@@ -127,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
             final String password = Password.getText().toString().trim();
 
             if(fullname.isEmpty() || email.isEmpty() || password.isEmpty()){
-                massage("Some fiels are Empty..");
+                massage("Một số trường trống...");
                 progressDialog.dismiss();
             }else {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.REGISTER_URL,
@@ -147,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                         return params;
                     }
                 };
+
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(stringRequest);
             }

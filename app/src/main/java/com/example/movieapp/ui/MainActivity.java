@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.movieapp.R;
 import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
@@ -34,8 +40,14 @@ import com.example.movieapp.models.Phim;
 import com.example.movieapp.models.ResponseParser;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,16 +56,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
-    List<Phim> listSlides;
+    List<Phim> listSlides,movies;
+    static List<Phim> callApiListMovies;
     ViewPager sliderPager;
     ViewPager2 viewPager2;
     TabLayout indicator, tabLayout;
-    RecyclerView moviesRV, moviesCovidRV;
+    RecyclerView moviesRV, moviesCovidRV, moviesProposeRV;
     MovieService movieService;
     ViewPagerAdapter viewPagerAdapter;
     Call<ResponseParser> call;
     MovieAdapter movieAdapter;
     SearchView searchView;
+    TextView txtPropose;
 
     MenuItem itemLogin;
     MenuItem itemProfile;
@@ -70,12 +84,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
 
         movieService = ApiUtils.getMoiveService();
+        calApi();
 
         iniViews();
         iniSlider();
         iniPopularMovies();
         iniCovidMovies();
         iniCategoryMovies();
+        iniProposeMovies();
     }
 
     private void iniViews() {
@@ -85,6 +101,84 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         moviesCovidRV = findViewById(R.id.Rv_movies_covid);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager);
+        moviesProposeRV = findViewById(R.id.Rv_movies_propose);
+        txtPropose = findViewById(R.id.txtPropose);
+        moviesProposeRV = findViewById(R.id.Rv_movies_propose);
+    }
+
+    private void iniProposeMovies() {
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Integer userID = sharedPref.getInt("UserID", 1);
+
+        StringRequest request = new StringRequest(Request.Method.POST, Urls.GET_USER_MOVIE,
+            response -> {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("historyMovies");
+
+                    call = movieService.getListMovies(Urls.API_PARAMS);
+                    call.enqueue(new Callback<ResponseParser>() {
+                        @Override
+                        public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                            ResponseParser responseParser = response.body();
+
+                            if (responseParser != null) {
+                                List<Phim> list = new ArrayList<>();
+                                movies = new ArrayList<>();
+                                movies = responseParser.getPhim().get("phimle");
+                                String categoryMovie;
+                                JSONObject object;
+
+                                for (int i = 0; i < jsonArray.length(); i++){
+                                    try {
+                                        Integer flag = 0;
+                                        object = jsonArray.getJSONObject(i);
+                                        categoryMovie = object.getString("category_movie");
+
+                                        for (int j = 0; j < movies.size(); j++) {
+                                            if (movies.get(j).getCategory().contains(categoryMovie)) {
+                                                list.add(movies.get(j));
+                                                flag++;
+                                            }
+
+                                            if (flag == 5) {
+                                                break;
+                                            }
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                movieAdapter = new MovieAdapter(MainActivity.this, list, MainActivity.this);
+                                moviesProposeRV.setAdapter(movieAdapter);
+                                moviesProposeRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseParser> call, Throwable t) {
+                            t.printStackTrace();
+                            Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }, null)
+        {
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", String.valueOf(userID));
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
+
     }
 
     private void iniCategoryMovies() {
@@ -122,6 +216,30 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
+    private void calApi () {
+        callApiListMovies = new ArrayList<>();
+        call = movieService.getListMovies(Urls.API_PARAMS);
+        call.enqueue(new Callback<ResponseParser>() {
+            @Override
+            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
+                ResponseParser responseParser = response.body();
+
+                if (responseParser != null) {
+                    callApiListMovies.addAll(responseParser.getPhim().get("phimle"));
+                    Log.v("callApiListMovies",""+callApiListMovies);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseParser> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Log.v("callApiListMovies2",""+callApiListMovies);
+    }
+
     private void iniSlider() {
         call = movieService.getListMovies(Urls.API_PARAMS);
         call.enqueue(new Callback<ResponseParser>() {
@@ -134,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     for (int i = 0; i < 5; i++) {
                         listSlides.add(responseParser.getPhim().get("phimle").get(i));
                     }
+
                     SliderPagerAdapter adapter = new SliderPagerAdapter(MainActivity.this, listSlides, MainActivity.this);
                     sliderPager.setAdapter(adapter);
 
@@ -297,6 +416,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 editor.remove("UserName");
                 editor.remove("UserEmail");
                 editor.remove("isLogin");
+                editor.remove("UserId");
                 editor.commit();
                 Intent intentMain = new Intent(this, MainActivity.class);
                 startActivity(intentMain);
@@ -320,6 +440,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         String username = sharedPref.getString("UserName",null);
 
         if(wasLogin){
+            moviesProposeRV.setVisibility(View.VISIBLE);
+            txtPropose.setVisibility(View.VISIBLE);
             itemLogin.setVisible(false);
             itemProfile.setVisible(true);
             itemLogout.setVisible(true);
@@ -328,6 +450,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             itemMyList.setVisible(true);
         }
         else {
+            moviesProposeRV.setVisibility(View.GONE);
+            txtPropose.setVisibility(View.GONE);
             itemLogin.setVisible(true);
             itemProfile.setVisible(false);
             itemLogout.setVisible(false);

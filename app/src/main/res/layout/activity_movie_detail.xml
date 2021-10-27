@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/detail_movie_cover"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="245dp"
             android:scaleType="centerCrop"
             android:src="@drawable/detail_play"
@@ -42,6 +42,9 @@
             app:layout_constraintTop_toTopOf="@+id/imageView"
             android:src="@drawable/ic_baseline_play_arrow_24" />
         <ImageView
+            android:background="#ffffff"
+            android:padding="2dp"
+            android:cropToPadding="true"
             android:id="@+id/detail_movie_img"
             android:layout_width="125dp"
             android:layout_height="175dp"
@@ -55,8 +58,6 @@
             android:src="@drawable/ic_launcher_background" />
 
         <TextView
-            android:maxLines="3"
-            android:ellipsize="end"
             android:id="@+id/detail_movie_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -73,12 +74,12 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_cover" />
 
         <TextView
+            android:textColor="@color/light_blue"
             android:id="@+id/detail_movie_gerne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Action"
-            android:textColor="@color/white"
             android:textSize="16dp"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/btn_save_my_list"

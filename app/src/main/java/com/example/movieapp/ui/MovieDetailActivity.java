@@ -3,6 +3,11 @@ package com.example.movieapp.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.movieapp.R;
 import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
@@ -15,7 +20,9 @@ import com.example.movieapp.models.ResponseParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -32,7 +39,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,6 +70,33 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
 
         iniMovieDetail();
         iniMovieRelated();
+
+        fab_player = findViewById(R.id.fab_play_movie);
+        fab_player.setOnClickListener(view -> UserMovie());
+    }
+
+    void UserMovie() {
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Integer userID = sharedPref.getInt("UserID", 1);
+        String movieCate = getIntent().getExtras().getString("category");
+        String movieEpisode = getIntent().getExtras().getString("episode");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.INSERT_USER_MOVIE, response -> {}, error -> {}){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", String.valueOf(userID));
+                params.put("categoryMovie",movieCate);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(MovieDetailActivity.this);
+        queue.add(stringRequest);
+
+        Intent intent = new Intent(MovieDetailActivity.this, MoviePlayerActivity.class);
+        intent.putExtra("episode", movieEpisode);
+        startActivity(intent);
     }
 
     void iniMovieDetail() {
@@ -75,7 +111,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         MovieCategory = findViewById(R.id.detail_movie_gerne);
         MovieCoverImg = findViewById(R.id.detail_movie_cover);
         RvMoiveRelated = findViewById(R.id.detail_related_movies);
-        fab_player = findViewById(R.id.fab_play_movie);
 
         getSupportActionBar().setTitle(movieTitle);
 
@@ -83,15 +118,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         Picasso.with(this).load(movieImgURL).into(MovieImg);
         Picasso.with(this).load(movieImgURL).into(MovieCoverImg);
         MovieCategory.setText(movieCate);
-
-        fab_player.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MovieDetailActivity.this, MoviePlayerActivity.class);
-                intent.putExtra("episode", movieEpisode);
-                startActivity(intent);
-            }
-        });
     }
 
     void iniMovieRelated() {
