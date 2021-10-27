@@ -296,7 +296,9 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.remove("UserName");
                 editor.remove("UserEmail");
+                editor.remove("UserID");
                 editor.remove("isLogin");
+                editor.remove("UserImage");
                 editor.commit();
                 Intent intentMain = new Intent(this, MainActivity.class);
                 startActivity(intentMain);

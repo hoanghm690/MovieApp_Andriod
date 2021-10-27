@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,15 +74,21 @@ public class LoginActivity extends AppCompatActivity {
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             if(result.equals("success")){
                                 progressDialog.dismiss();
+
                                 for (int i = 0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     String fullname_profile = object.getString("fullname");
                                     String email_profile = object.getString("email");
+                                    Integer userId_profile = object.getInt("userID");
+                                    String img_profile = object.getString("image");
+
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     SharedPreferences sharedPref = getSharedPreferences("User",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putString("UserName", fullname_profile);
                                     editor.putString("UserEmail", email_profile);
+                                    editor.putString("UserImage", img_profile);
+                                    editor.putInt("UserID",userId_profile);
                                     editor.putBoolean("isLogin", true);
                                     editor.apply();
                                     startActivity(intent);finish();
