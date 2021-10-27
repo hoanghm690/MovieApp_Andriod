@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/black_border_rounded_cornwe.xml" value="0.1284722222222222" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/changepass.xml" value="0.18020833333333333" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/cursor_color.xml" value="0.1284722222222222" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/default_indicator.xml" value="0.11979166666666667" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/gradient_bg.xml" value="0.2552083333333333" />
@@ -11,6 +12,7 @@
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.11388888888888889" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/indicator_selector.xml" value="0.11979166666666667" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/selected_indicator.xml" value="0.11979166666666667" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/white_border_rounded_cornwe.xml" value="0.18020833333333333" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/drawable/white_password.xml" value="0.1284722222222222" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_login.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
@@ -18,6 +20,7 @@
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_movie_player.xml" value="0.11840277777777777" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_my_list.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_profile.xml" value="0.16944444444444445" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/activity_search.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/change_password.xml" value="0.16944444444444445" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_action.xml" value="0.115625" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/fragment_comedy.xml" value="0.115625" />
@@ -31,6 +34,7 @@
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/related_item.xml" value="0.1" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/layout/slide_item.xml" value="0.24444444444444444" />
         <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/menu/main_menu.xml" value="0.1" />
+        <entry key="..\:/IT/AndroidStudio/MovieApp/app/src/main/res/xml/searchable.xml" value="0.1" />
       </map>
     </option>
   </component>

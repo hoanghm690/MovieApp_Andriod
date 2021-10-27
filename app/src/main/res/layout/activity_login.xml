@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ui.LoginActivity"
-
     android:background="@drawable/dn"
     >
 
@@ -24,8 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 app:cardBackgroundColor="#1C1B1B"
-                android:alpha="0.9"
-                app:cardCornerRadius="50dp"
+                android:alpha="0.8"
+                app:cardCornerRadius="10dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp">
                 <LinearLayout
@@ -42,6 +41,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/white"
                         android:layout_marginBottom="15dp"/>
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,6 +135,20 @@
                         android:background="@drawable/button_login_fill__rounded_color"
                         android:gravity="center"
                         android:text="Đăng nhập"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="10dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="62dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="62dp"
+                        android:gravity="center"
+                        android:text="Bạn chưa có tài khoản?"
                         android:textColor="#ffffff"
                         android:textSize="15sp" />
 

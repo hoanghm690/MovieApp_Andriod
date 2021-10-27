@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,7 +59,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
     List<Phim> listSlides,movies;
-    static List<Phim> callApiListMovies;
+    ArrayList<Phim> callApiListMovies;
     ViewPager sliderPager;
     ViewPager2 viewPager2;
     TabLayout indicator, tabLayout;
@@ -84,7 +86,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
 
         movieService = ApiUtils.getMoiveService();
-        calApi();
+
+        callApi();
+
+        Log.v("callApiListMovies",""+callApiListMovies);
 
         iniViews();
         iniSlider();
@@ -216,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
-    private void calApi () {
+    public void callApi () {
         callApiListMovies = new ArrayList<>();
         call = movieService.getListMovies(Urls.API_PARAMS);
         call.enqueue(new Callback<ResponseParser>() {
@@ -226,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
                 if (responseParser != null) {
                     callApiListMovies.addAll(responseParser.getPhim().get("phimle"));
-                    Log.v("callApiListMovies",""+callApiListMovies);
                 }
             }
 
@@ -236,8 +240,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
             }
         });
-
-        Log.v("callApiListMovies2",""+callApiListMovies);
     }
 
     private void iniSlider() {
@@ -356,45 +358,65 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         }
     }
 
-    @Override
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint("Nhập tìm kiếm của bạn tại đây");
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                movieAdapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                movieAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-            return;
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main_menu, menu);
+//
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.action_search).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setMaxWidth(Integer.MAX_VALUE);
+//        searchView.setQueryHint("Nhập tìm kiếm của bạn tại đây");
+//
+//        searchView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intentSearch = new Intent(MainActivity.this, SearchActivity.class);
+//                startActivity(intentSearch);
+//            }
+//        });
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                movieAdapter.getFilter().filter(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                movieAdapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
+//        return true;
+//    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        if (!searchView.isIconified()) {
+//            searchView.setIconified(true);
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.action_search:
+                Intent intentSearch = new Intent(this, SearchActivity.class);
+                startActivity(intentSearch);
+                item.getActionView().setVisibility(View.GONE);
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                return true;
+
             case R.id.action_login:
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
