@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -98,12 +100,12 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        MenuItem searchMenuItem = menu.findItem( R.id.action_search);
-        MenuItem loginMenuItem = menu.findItem( R.id.action_login);
-        MenuItem nameMenuItem = menu.findItem( R.id.action_name);
-        MenuItem profileMenuItem = menu.findItem( R.id.action_profile);
-        MenuItem myListMenuItem = menu.findItem( R.id.action_mylist);
-        MenuItem logoutMenuItem = menu.findItem( R.id.action_logout);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        MenuItem loginMenuItem = menu.findItem(R.id.action_login);
+        MenuItem nameMenuItem = menu.findItem(R.id.action_name);
+        MenuItem profileMenuItem = menu.findItem(R.id.action_profile);
+        MenuItem myListMenuItem = menu.findItem(R.id.action_mylist);
+        MenuItem logoutMenuItem = menu.findItem(R.id.action_logout);
 
         loginMenuItem.setVisible(false);
         nameMenuItem.setVisible(false);
@@ -112,6 +114,7 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
         logoutMenuItem.setVisible(false);
 
         searchMenuItem.expandActionView();
+        searchMenuItem.getActionView().setVisibility(View.VISIBLE);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -136,12 +139,14 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if(itemId == android.R.id.home){
-//            MenuItem itemSearch = findViewById(R.id.action_search);
-//            itemSearch.setVisible(true);
-//            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             finish();
         }
         return true;

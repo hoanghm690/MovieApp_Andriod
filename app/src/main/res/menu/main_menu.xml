@@ -4,7 +4,7 @@
 
     <item android:id="@+id/action_search"
         android:title="@string/action_search"
-        android:icon="@drawable/icon_search"
+        android:icon="@drawable/baseline_search_white_18"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
