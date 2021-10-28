@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     MenuItem itemLogout;
     MenuItem itemName;
     MenuItem itemMyList;
+    MenuItem itemSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                         @Override
                         public void onFailure(Call<ResponseParser> call, Throwable t) {
                             t.printStackTrace();
-                            Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -237,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             @Override
             public void onFailure(Call<ResponseParser> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -268,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             @Override
             public void onFailure(Call<ResponseParser> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -295,7 +293,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             @Override
             public void onFailure(Call<ResponseParser> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -322,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             @Override
             public void onFailure(Call<ResponseParser> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(MainActivity.this, "Call api error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -337,8 +333,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         intent.putExtra("category", movie.getCategory());
         intent.putExtra("episode", movie.getEpisode().get(0).getUrl());
         startActivity(intent);
-
-        Toast.makeText(this, "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     class SliderTimer extends TimerTask {
@@ -358,63 +352,21 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         }
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main_menu, menu);
-//
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.action_search).getActionView();
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
-//        searchView.setQueryHint("Nhập tìm kiếm của bạn tại đây");
-//
-//        searchView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intentSearch = new Intent(MainActivity.this, SearchActivity.class);
-//                startActivity(intentSearch);
-//            }
-//        });
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                movieAdapter.getFilter().filter(query);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                movieAdapter.getFilter().filter(newText);
-//                return false;
-//            }
-//        });
-//        return true;
-//    }
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (!searchView.isIconified()) {
-//            searchView.setIconified(true);
-//            return;
-//        }
-//        super.onBackPressed();
-//    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_search:
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
                 Intent intentSearch = new Intent(this, SearchActivity.class);
                 startActivity(intentSearch);
-                item.getActionView().setVisibility(View.GONE);
-                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
                 return true;
 
             case R.id.action_login:
@@ -457,6 +409,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         itemLogout = menu.findItem(R.id.action_logout);
         itemName = menu.findItem(R.id.action_name);
         itemMyList = menu.findItem(R.id.action_mylist);
+        itemSearch = menu.findItem(R.id.action_search);
 
         SharedPreferences sharedPref = getSharedPreferences("User",Context.MODE_PRIVATE);
         boolean wasLogin = sharedPref.getBoolean("isLogin",false);

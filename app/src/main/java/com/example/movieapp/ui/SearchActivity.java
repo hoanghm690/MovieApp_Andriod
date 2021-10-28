@@ -33,6 +33,7 @@ import com.example.movieapp.models.ResponseParser;
 import java.util.ArrayList;
 import java.util.List;
 
+import gun0912.tedbottompicker.GridSpacingItemDecoration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,7 +73,8 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
 
                     movieAdapter = new MovieAdapter(SearchActivity.this, listMovies, SearchActivity.this);
                     rvListMovies.setAdapter(movieAdapter);
-                    rvListMovies.setLayoutManager(new GridLayoutManager(SearchActivity.this, 3));
+                    rvListMovies.addItemDecoration(new GridSpacingItemDecoration(2, 68, true));
+                    rvListMovies.setLayoutManager(new GridLayoutManager(SearchActivity.this, 2));
 //                    rvListMovies.setLayoutManager(new LinearLayoutManager(SearchActivity.this, RecyclerView.HORIZONTAL, false));
                 }
             }
@@ -92,8 +94,6 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
         intent.putExtra("category", movie.getCategory());
         intent.putExtra("episode", movie.getEpisode().get(0).getUrl());
         startActivity(intent);
-
-        Toast.makeText(this, "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -101,11 +101,22 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         MenuItem loginMenuItem = menu.findItem(R.id.action_login);
         MenuItem nameMenuItem = menu.findItem(R.id.action_name);
         MenuItem profileMenuItem = menu.findItem(R.id.action_profile);
         MenuItem myListMenuItem = menu.findItem(R.id.action_mylist);
         MenuItem logoutMenuItem = menu.findItem(R.id.action_logout);
+
+        searchMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         loginMenuItem.setVisible(false);
         nameMenuItem.setVisible(false);
@@ -114,10 +125,9 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
         logoutMenuItem.setVisible(false);
 
         searchMenuItem.expandActionView();
-        searchMenuItem.getActionView().setVisibility(View.VISIBLE);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("Nhập tìm kiếm của bạn tại đây");
@@ -135,11 +145,7 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
                 return false;
             }
         });
-        return true;
-    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
         return true;
     }
 
@@ -148,6 +154,8 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
         int itemId = item.getItemId();
         if(itemId == android.R.id.home){
             finish();
+            Intent intentSearch = new Intent(this, MainActivity.class);
+            startActivity(intentSearch);
         }
         return true;
     }
