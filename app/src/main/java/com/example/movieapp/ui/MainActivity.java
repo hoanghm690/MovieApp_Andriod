@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     private void iniProposeMovies() {
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Integer userID = sharedPref.getInt("UserID", 1);
+        Integer userID = sharedPref.getInt("UserID", 0);
 
         StringRequest request = new StringRequest(Request.Method.POST, Urls.GET_USER_MOVIE,
             response -> {
@@ -406,6 +406,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 //        super.onBackPressed();
 //    }
 
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -437,8 +439,9 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 editor.remove("UserName");
                 editor.remove("UserEmail");
                 editor.remove("isLogin");
-                editor.remove("UserId");
+                editor.remove("UserID");
                 editor.commit();
+                AppState.getSingleInstance().setLoggingOut(true);
                 Intent intentMain = new Intent(this, MainActivity.class);
                 startActivity(intentMain);
                 finish();

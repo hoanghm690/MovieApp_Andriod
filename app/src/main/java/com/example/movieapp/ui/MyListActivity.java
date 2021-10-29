@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gun0912.tedbottompicker.GridSpacingItemDecoration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,9 +64,15 @@ public class MyListActivity extends AppCompatActivity implements MovieItemClickL
         iniListMovies();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        iniListMovies();
+    }
+
     private void iniListMovies() {
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Integer userID = sharedPref.getInt("UserID", 1);
+        Integer userID = sharedPref.getInt("UserID", 0);
 
         StringRequest request = new StringRequest(Request.Method.POST, Urls.GET_BOOKMARK,
                 response -> {
@@ -91,7 +98,7 @@ public class MyListActivity extends AppCompatActivity implements MovieItemClickL
                                             titleMovie = object.getString("title_movie");
 
                                             for (int j = 0; j < movies.size(); j++) {
-                                                if (movies.get(j).getCategory().contains(titleMovie)) {
+                                                if (movies.get(j).getTitle().contains(titleMovie)) {
                                                     Log.d("message", "onResponse: " +titleMovie);
                                                     list.add(movies.get(j));
                                                 }
@@ -104,7 +111,8 @@ public class MyListActivity extends AppCompatActivity implements MovieItemClickL
 
                                     movieAdapter = new MovieAdapter(MyListActivity.this, list, MyListActivity.this);
                                     rvListMovies.setAdapter(movieAdapter);
-                                    rvListMovies.setLayoutManager(new LinearLayoutManager(MyListActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                                    rvListMovies.addItemDecoration(new GridSpacingItemDecoration(2, 68, true));
+                                    rvListMovies.setLayoutManager(new GridLayoutManager(MyListActivity.this, 2));
                                 }
                             }
 

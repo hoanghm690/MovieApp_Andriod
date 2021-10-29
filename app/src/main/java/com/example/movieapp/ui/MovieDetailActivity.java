@@ -63,13 +63,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
     private Call<ResponseParser> call;
     private List<Phim> listMovies, movies;
     private FloatingActionButton fab_player;
-    private ToggleButton AddBtn;
+    private Button AddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-
+        CheckMyList();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
 
@@ -82,13 +82,18 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         fab_player.setOnClickListener(view -> UserMovie());
 
         AddBtn = findViewById(R.id.btn_save_my_list);
-        CheckMyList();
+
         AddBtn.setOnClickListener(view -> AddMyList());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     void CheckMyList() {
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Integer userID = sharedPref.getInt("UserID", 1);
+        Integer userID = sharedPref.getInt("UserID", 0);
         String movieTitle = getIntent().getExtras().getString("title");
 
         StringRequest request = new StringRequest(Request.Method.POST, Urls.CHECK_BOOKMARK,
@@ -97,7 +102,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
                         JSONObject jsonObject = new JSONObject(response);
                         String result = jsonObject.getString("status");
                         if(result.equals("true")){
-                            AddBtn.toggle();
+                            AddBtn.setText("Huy Luu");
+                        }else{
+                            AddBtn.setText("Luu");
                         }
                     }catch (JSONException e){
                         e.printStackTrace();
@@ -120,11 +127,31 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
     }
 
     void AddMyList() {
+
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Integer userID = sharedPref.getInt("UserID", 1);
+        boolean wasLogin = sharedPref.getBoolean("isLogin",false);
+        Integer userID = sharedPref.getInt("UserID", 0);
+        if(userID==0 && !wasLogin){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         String movieTitle = getIntent().getExtras().getString("title");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.TOGGLE_BOOKMARK, response -> {}, error -> {}){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.TOGGLE_BOOKMARK, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String result = jsonObject.getString("status");
+                if(result.equals("insert")){
+                    AddBtn.setText("Huy Luu");
+                }else{
+                    AddBtn.setText("Luu");
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }, error -> {}){
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -141,7 +168,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
 
     void UserMovie() {
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Integer userID = sharedPref.getInt("UserID", 1);
+        Integer userID = sharedPref.getInt("UserID", 0);
         String movieCate = getIntent().getExtras().getString("category");
         String movieEpisode = getIntent().getExtras().getString("episode");
 
