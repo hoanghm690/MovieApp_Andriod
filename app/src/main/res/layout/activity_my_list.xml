@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/bg_blue"
     tools:context="ui.MyListActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txt_MyList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -20,11 +20,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_mylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_MyList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

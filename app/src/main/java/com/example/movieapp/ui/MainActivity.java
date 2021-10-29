@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.getJSONArray("historyMovies");
-
                     call = movieService.getListMovies(Urls.API_PARAMS);
                     call.enqueue(new Callback<ResponseParser>() {
                         @Override

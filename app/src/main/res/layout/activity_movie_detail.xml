@@ -86,13 +86,15 @@
             app:layout_constraintStart_toEndOf="@+id/detail_movie_img"
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_title" />
 
-        <Button
+        <ToggleButton
             android:id="@+id/btn_save_my_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
             android:layout_marginTop="4dp"
-            android:text="Lưu"
+            android:textOff="Luu"
+            android:textOn="Huy Luu"
+            android:background="@drawable/my_btn_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_img"

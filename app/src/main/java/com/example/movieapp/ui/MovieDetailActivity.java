@@ -29,14 +29,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +63,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
     private Call<ResponseParser> call;
     private List<Phim> listMovies, movies;
     private FloatingActionButton fab_player;
+    private ToggleButton AddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,63 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
 
         fab_player = findViewById(R.id.fab_play_movie);
         fab_player.setOnClickListener(view -> UserMovie());
+
+        AddBtn = findViewById(R.id.btn_save_my_list);
+        CheckMyList();
+        AddBtn.setOnClickListener(view -> AddMyList());
+    }
+
+    void CheckMyList() {
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Integer userID = sharedPref.getInt("UserID", 1);
+        String movieTitle = getIntent().getExtras().getString("title");
+
+        StringRequest request = new StringRequest(Request.Method.POST, Urls.CHECK_BOOKMARK,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String result = jsonObject.getString("status");
+                        if(result.equals("true")){
+                            AddBtn.toggle();
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }, error -> {
+            massage(error.getMessage());
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("userID", String.valueOf(userID));
+                params.put("titleMovie",movieTitle);
+                Log.d("messageeeeee", "getParams: "+params);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MovieDetailActivity.this);
+        queue.add(request);
+    }
+
+    void AddMyList() {
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Integer userID = sharedPref.getInt("UserID", 1);
+        String movieTitle = getIntent().getExtras().getString("title");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.TOGGLE_BOOKMARK, response -> {}, error -> {}){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", String.valueOf(userID));
+                params.put("titleMovie",movieTitle);
+                Log.d("message", "getParams: "+params);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MovieDetailActivity.this);
+        queue.add(stringRequest);
+
     }
 
     void UserMovie() {
@@ -87,6 +151,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
                 Map<String, String> params = new HashMap<>();
                 params.put("userID", String.valueOf(userID));
                 params.put("categoryMovie",movieCate);
+                Log.d("message", "getParams: "+params);
                 return params;
             }
         };
@@ -171,5 +236,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
             finish();
         }
         return true;
+    }
+    public void massage(String massage){
+        Toast.makeText(this, massage, Toast.LENGTH_LONG).show();
     }
 }
