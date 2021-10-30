@@ -88,10 +88,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         movieService = ApiUtils.getMoiveService();
 
-        callApi();
-
-        Log.v("callApiListMovies",""+callApiListMovies);
-
         iniViews();
         iniSlider();
         iniPopularMovies();
@@ -114,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     private void iniProposeMovies() {
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Integer userID = sharedPref.getInt("UserID", 1);
+        Integer userID = sharedPref.getInt("UserID", 0);
 
         StringRequest request = new StringRequest(Request.Method.POST, Urls.GET_USER_MOVIE,
             response -> {
@@ -157,9 +153,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                                     }
                                 }
 
-                                movieAdapter = new MovieAdapter(MainActivity.this, list, MainActivity.this);
-                                moviesProposeRV.setAdapter(movieAdapter);
-                                moviesProposeRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                                TextView txtPropose = findViewById(R.id.txtPropose);
+                                if (!list.isEmpty()){
+                                    movieAdapter = new MovieAdapter(MainActivity.this, list, MainActivity.this);
+                                    moviesProposeRV.setAdapter(movieAdapter);
+                                    moviesProposeRV.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                                }else{
+                                    txtPropose.setVisibility(View.GONE);
+                                }
                             }
                         }
 
@@ -219,26 +220,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             }
         });
 
-    }
-
-    public void callApi () {
-        callApiListMovies = new ArrayList<>();
-        call = movieService.getListMovies(Urls.API_PARAMS);
-        call.enqueue(new Callback<ResponseParser>() {
-            @Override
-            public void onResponse(Call<ResponseParser> call, Response<ResponseParser> response) {
-                ResponseParser responseParser = response.body();
-
-                if (responseParser != null) {
-                    callApiListMovies.addAll(responseParser.getPhim().get("phimle"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseParser> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 
     private void iniSlider() {
@@ -436,4 +417,5 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         }
         return true;
     }
+
 }

@@ -58,6 +58,8 @@
             android:src="@drawable/ic_launcher_background" />
 
         <TextView
+            android:maxLines="5"
+            android:ellipsize="end"
             android:id="@+id/detail_movie_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -93,6 +95,7 @@
             android:layout_marginStart="31dp"
             android:layout_marginTop="4dp"
             android:text="Lưu"
+            android:inputType="textCapCharacters"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_img"

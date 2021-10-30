@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         String mImage = sharedPref.getString("UserImage",null);
         final String mEmail = sharedPref.getString("UserEmail",null);
 
-        if (mImage == null){
+        if (mImage.equals("null")){
             image.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.man, null));
         }else{
             byte[] imgDecode = Base64.getDecoder().decode(mImage);

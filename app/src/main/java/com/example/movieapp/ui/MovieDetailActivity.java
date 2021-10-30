@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,11 +61,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
     private Call<ResponseParser> call;
     private List<Phim> listMovies, movies;
     private FloatingActionButton fab_player;
+    private Button AddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+
+        CheckMyList();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#212b36")));
@@ -73,6 +80,79 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
 
         fab_player = findViewById(R.id.fab_play_movie);
         fab_player.setOnClickListener(view -> UserMovie());
+
+        AddBtn = findViewById(R.id.btn_save_my_list);
+        AddBtn.setOnClickListener(view -> AddMyList());
+    }
+
+    void CheckMyList() {
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Integer userID = sharedPref.getInt("UserID", 0);
+        String movieTitle = getIntent().getExtras().getString("title");
+
+        StringRequest request = new StringRequest(Request.Method.POST, Urls.CHECK_BOOKMARK,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String result = jsonObject.getString("status");
+                        if(result.equals("true")){
+                            AddBtn.setText("Hủy lưu");
+                        }else{
+                            AddBtn.setText("Lưu");
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }, error ->{
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("userID", String.valueOf(userID));
+                params.put("titleMovie",movieTitle);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MovieDetailActivity.this);
+        queue.add(request);
+    }
+
+    void AddMyList() {
+        SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        boolean wasLogin = sharedPref.getBoolean("isLogin",false);
+        Integer userID = sharedPref.getInt("UserID", 0);
+        if(userID==0 && !wasLogin){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        String movieTitle = getIntent().getExtras().getString("title");
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.TOGGLE_BOOKMARK, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String result = jsonObject.getString("status");
+                if(result.equals("insert")){
+                    AddBtn.setText("Hủy lưu");
+                }else{
+                    AddBtn.setText("Lưu");
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }, error -> {}){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", String.valueOf(userID));
+                params.put("titleMovie",movieTitle);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MovieDetailActivity.this);
+        queue.add(stringRequest);
+
     }
 
     void UserMovie() {
@@ -160,8 +240,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         intent.putExtra("category", movie.getCategory());
         intent.putExtra("episode", movie.getEpisode().get(0).getUrl());
         startActivity(intent);
-
-        Toast.makeText(this, "item clicked: " + movie.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
