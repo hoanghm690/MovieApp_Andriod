@@ -9,6 +9,7 @@
     tools:context="ui.MyListActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_gravity="center_horizontal"
         android:id="@+id/rv_my_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

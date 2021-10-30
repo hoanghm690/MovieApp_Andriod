@@ -28,6 +28,7 @@ import com.example.movieapp.R;
 import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
 import com.example.movieapp.adapters.MovieItemClickListener;
+import com.example.movieapp.adapters.MyListAdapter;
 import com.example.movieapp.api.ApiUtils;
 import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
@@ -49,7 +50,7 @@ import retrofit2.Response;
 
 public class MyListActivity extends AppCompatActivity implements MovieItemClickListener {
 
-    MovieAdapter movieAdapter;
+    MyListAdapter movieAdapter;
     MovieService movieService;
     RecyclerView rvListMovies;
     List<Phim> movies;
@@ -113,9 +114,8 @@ public class MyListActivity extends AppCompatActivity implements MovieItemClickL
                                         }
                                     }
 
-                                    movieAdapter = new MovieAdapter(MyListActivity.this, list, MyListActivity.this);
+                                    movieAdapter = new MyListAdapter(MyListActivity.this, list, MyListActivity.this);
                                     rvListMovies.setAdapter(movieAdapter);
-                                    rvListMovies.addItemDecoration(new GridSpacingItemDecoration(2, 68, true));
                                     rvListMovies.setLayoutManager(new GridLayoutManager(MyListActivity.this, 2));
                                 }
                             }

@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 editor.remove("UserName");
                 editor.remove("UserEmail");
                 editor.remove("isLogin");
-                editor.remove("UserId");
+                editor.remove("UserID");
                 editor.remove("UserImage");
                 editor.commit();
                 Intent intentMain = new Intent(this, MainActivity.class);
@@ -418,4 +418,9 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        iniProposeMovies();
+    }
 }

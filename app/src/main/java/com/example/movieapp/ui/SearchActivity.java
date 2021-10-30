@@ -25,6 +25,7 @@ import com.example.movieapp.R;
 import com.example.movieapp.Urls.Urls;
 import com.example.movieapp.adapters.MovieAdapter;
 import com.example.movieapp.adapters.MovieItemClickListener;
+import com.example.movieapp.adapters.MyListAdapter;
 import com.example.movieapp.api.ApiUtils;
 import com.example.movieapp.api.MovieService;
 import com.example.movieapp.models.Phim;
@@ -40,7 +41,7 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity implements MovieItemClickListener{
     SearchView searchView;
-    MovieAdapter movieAdapter;
+    MyListAdapter movieAdapter;
     MovieService movieService;
     RecyclerView rvListMovies;
 
@@ -71,11 +72,10 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
                         listMovies.add(responseParser.getPhim().get("phimle").get(i));
                     }
 
-                    movieAdapter = new MovieAdapter(SearchActivity.this, listMovies, SearchActivity.this);
+                    movieAdapter = new MyListAdapter(SearchActivity.this, listMovies, SearchActivity.this);
                     rvListMovies.setAdapter(movieAdapter);
-                    rvListMovies.addItemDecoration(new GridSpacingItemDecoration(2, 68, true));
+//                    rvListMovies.addItemDecoration(new GridSpacingItemDecoration(2, 68, true));
                     rvListMovies.setLayoutManager(new GridLayoutManager(SearchActivity.this, 2));
-//                    rvListMovies.setLayoutManager(new LinearLayoutManager(SearchActivity.this, RecyclerView.HORIZONTAL, false));
                 }
             }
 

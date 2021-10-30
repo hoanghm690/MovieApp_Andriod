@@ -88,7 +88,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
     void CheckMyList() {
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
         Integer userID = sharedPref.getInt("UserID", 0);
+        boolean wasLogin = sharedPref.getBoolean("isLogin",false);
         String movieTitle = getIntent().getExtras().getString("title");
+
+        if(!wasLogin){
+            return;
+        }
 
         StringRequest request = new StringRequest(Request.Method.POST, Urls.CHECK_BOOKMARK,
                 response -> {
@@ -122,7 +127,11 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
         boolean wasLogin = sharedPref.getBoolean("isLogin",false);
         Integer userID = sharedPref.getInt("UserID", 0);
-        if(userID==0 && !wasLogin){
+
+        Log.v("wasLogin",""+wasLogin);
+        Log.v("userID",""+userID);
+
+        if(userID == 0 && !wasLogin){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return;
