@@ -130,9 +130,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         boolean wasLogin = sharedPref.getBoolean("isLogin",false);
         Integer userID = sharedPref.getInt("UserID", 0);
 
-        Log.v("wasLogin",""+wasLogin);
-        Log.v("userID",""+userID);
-
         if(userID == 0 && !wasLogin){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

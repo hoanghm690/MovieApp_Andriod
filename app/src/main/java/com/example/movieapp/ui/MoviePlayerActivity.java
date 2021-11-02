@@ -17,7 +17,6 @@ public class MoviePlayerActivity extends AppCompatActivity {
     private WebView webView;
     private String USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +57,12 @@ public class MoviePlayerActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
-                webView.loadUrl("javascript:(function() { document.getElementsByTagName(\"video\")[0].play(); })()");
+            webView.loadUrl("javascript:(function() { document.getElementsByTagName(\"video\")[0].play(); })()");
             }
         });
 
         webView.setWebChromeClient(new WebChromeClient());
         webView.loadUrl(VIDEO_URL);
-//        webView.loadData(videoIf, "text/html", "UTF-8");
     }
 
     @Override
