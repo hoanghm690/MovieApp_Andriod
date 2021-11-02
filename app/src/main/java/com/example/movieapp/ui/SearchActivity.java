@@ -11,6 +11,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -74,8 +75,12 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
 
                     movieAdapter = new MyListAdapter(SearchActivity.this, listMovies, SearchActivity.this);
                     rvListMovies.setAdapter(movieAdapter);
-//                    rvListMovies.addItemDecoration(new GridSpacingItemDecoration(2, 68, true));
-                    rvListMovies.setLayoutManager(new GridLayoutManager(SearchActivity.this, 2));
+                    if(SearchActivity.this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                        rvListMovies.setLayoutManager(new GridLayoutManager(SearchActivity.this, 2));
+                    }
+                    else{
+                        rvListMovies.setLayoutManager(new GridLayoutManager(SearchActivity.this, 3));
+                    }
                 }
             }
 
@@ -85,6 +90,12 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
             }
         });
     }
+
+//    @Override
+//    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        orientationLand = (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? true : false);
+//    }
 
     @Override
     public void onMovieClick(Phim movie, ImageView movieImageView) {
@@ -101,9 +112,6 @@ public class SearchActivity extends AppCompatActivity implements MovieItemClickL
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-
-
-
         return true;
     }
 

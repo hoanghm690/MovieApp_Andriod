@@ -1,6 +1,7 @@
 package com.example.movieapp.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.MyViewHold
             });
         }
     }
+
 
     @Override
     public Filter getFilter() {

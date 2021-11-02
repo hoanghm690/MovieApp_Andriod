@@ -11,6 +11,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -116,7 +117,12 @@ public class MyListActivity extends AppCompatActivity implements MovieItemClickL
 
                                     movieAdapter = new MyListAdapter(MyListActivity.this, list, MyListActivity.this);
                                     rvListMovies.setAdapter(movieAdapter);
-                                    rvListMovies.setLayoutManager(new GridLayoutManager(MyListActivity.this, 2));
+                                    if(MyListActivity.this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                                        rvListMovies.setLayoutManager(new GridLayoutManager(MyListActivity.this, 2));
+                                    }
+                                    else{
+                                        rvListMovies.setLayoutManager(new GridLayoutManager(MyListActivity.this, 3));
+                                    }
                                 }
                             }
 

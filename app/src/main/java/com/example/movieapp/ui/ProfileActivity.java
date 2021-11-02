@@ -130,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
 
-            builder.setNegativeButton("cancel", (dialogInterface, i1) -> dialogInterface.dismiss());
+            builder.setNegativeButton("Hủy", (dialogInterface, i1) -> dialogInterface.dismiss());
 
             AlertDialog dialog = builder.create();
             dialog.show();

@@ -30,8 +30,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="#1C1B1B"
                 android:alpha="0.8"
+                app:cardBackgroundColor="#1C1B1B"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -54,11 +54,11 @@
                         android:textStyle="bold" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_gravity="center"
                         android:id="@+id/profile_image"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
-                        android:scaleType="centerCrop"/>
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -69,6 +69,7 @@
                         android:background="@drawable/white_border_rounded_cornwe">
 
                         <EditText
+                            android:focusable="false"
                             android:id="@+id/p_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
