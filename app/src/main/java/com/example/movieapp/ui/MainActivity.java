@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
                     // setup timer
                     Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
+                    timer.scheduleAtFixedRate(new SliderTimer(), 2000, 3000);
                     indicator.setupWithViewPager(sliderPager, true);
                 }
             }

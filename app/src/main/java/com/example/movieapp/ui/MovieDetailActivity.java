@@ -102,8 +102,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
                         String result = jsonObject.getString("status");
                         if(result.equals("true")){
                             AddBtn.setText("Hủy lưu");
+                            AddBtn.setBackgroundColor(getColor(R.color.teal_700));
                         }else{
                             AddBtn.setText("Lưu");
+                            AddBtn.setBackgroundColor(getColor(R.color.teal_200));
                         }
                     }catch (JSONException e){
                         e.printStackTrace();
@@ -144,8 +146,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
                 String result = jsonObject.getString("status");
                 if(result.equals("insert")){
                     AddBtn.setText("Hủy lưu");
+                    AddBtn.setBackgroundColor(getColor(R.color.teal_700));
                 }else{
                     AddBtn.setText("Lưu");
+                    AddBtn.setBackgroundColor(getColor(R.color.teal_200));
                 }
             }catch (JSONException e){
                 e.printStackTrace();
@@ -256,6 +260,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieItemC
         int itemId = item.getItemId();
         if(itemId == android.R.id.home){
             finish();
+            Intent intentSearch = new Intent(this, MainActivity.class);
+            startActivity(intentSearch);
         }
         return true;
     }
